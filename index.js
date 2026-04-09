@@ -8,25 +8,26 @@ const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } });
 
 app.use(cors());
 app.use(express.json());
-
-// Serve frontend
 app.use(express.static(path.join(__dirname, "public")));
 
 const finishDetails = {
   kahlua: {
     label: "Kahlua",
-    description: "SGM Kahlua spray deck — a textured concrete resurfacing system in warm, sandy coffee-brown tones",
-    prompt: "Transform this pool deck and surround with SGM Kahlua spray deck finish: smooth-to-lightly textured concrete surface in warm coffee-caramel sandy brown color, clean crisp edges around the pool coping, uniform color with natural concrete texture variation. The pool water remains blue. Photorealistic pool remodel, bright daylight, professional photography.",
+    description: "SGM Kahlua spray deck — warm sandy coffee-brown textured concrete",
+    editPrompt: "Replace the pool deck and coping surround with SGM Kahlua spray deck finish: smooth textured concrete in warm coffee-caramel sandy brown color (#C4A882). Keep everything else exactly the same — the pool water, the house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the deck/surround surface material and color.",
+    negativePrompt: "changed pool water, different background, different trees, different house, changed sky, blurry, distorted",
   },
   dessert: {
     label: "Dessert",
-    description: "SGM Dessert spray deck — a textured concrete resurfacing system in light, pale cream and warm ivory tones",
-    prompt: "Transform this pool deck and surround with SGM Dessert spray deck finish: smooth-to-lightly textured concrete surface in pale cream soft warm ivory color, clean crisp edges around the pool coping, uniform light color with natural concrete texture variation. The pool water remains blue. Photorealistic pool remodel, bright daylight, professional photography.",
+    description: "SGM Dessert spray deck — pale cream warm ivory textured concrete",
+    editPrompt: "Replace the pool deck and coping surround with SGM Dessert spray deck finish: smooth textured concrete in pale cream warm ivory color (#E8D5B0). Keep everything else exactly the same — the pool water, the house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the deck/surround surface material and color.",
+    negativePrompt: "changed pool water, different background, different trees, different house, changed sky, blurry, distorted",
   },
   tile: {
     label: "Blue Gemstone 6×6",
-    description: "National Pool Tile GMS Blue Gemstone 6×6 — a glossy deep ocean-blue ceramic tile for pool interiors and waterlines",
-    prompt: "Transform the waterline and interior of this pool with National Pool Tile Blue Gemstone 6x6 ceramic tiles: glossy deep ocean-blue tiles in a clean grid pattern along the waterline band and pool interior walls, rich sapphire-cobalt blue color, reflective glossy finish. The pool deck stays the same. Photorealistic pool remodel, bright daylight, professional photography.",
+    description: "National Pool Tile Blue Gemstone 6×6 — glossy deep ocean-blue ceramic tile",
+    editPrompt: "Replace the pool interior walls and waterline with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles: deep ocean-blue sapphire color in a clean grid pattern, reflective glossy finish. Keep everything else exactly the same — the pool deck, house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the pool interior tile surface.",
+    negativePrompt: "changed deck, different background, different trees, different house, changed sky, blurry, distorted",
   },
 };
 
@@ -35,9 +36,10 @@ app.get("/health", (req, res) => res.json({ status: "ok", service: "AI Pool Remo
 app.post("/remodel", upload.single("image"), async (req, res) => {
   try {
     const Anthropic = require("@anthropic-ai/sdk");
-    const OpenAI = require("openai");
+    const Replicate = require("replicate");
+
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
 
     const { finish } = req.body;
     const imageFile = req.file;
@@ -48,7 +50,9 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     const finishInfo = finishDetails[finish];
     const imageBase64 = imageFile.buffer.toString("base64");
     const mediaType = imageFile.mimetype || "image/jpeg";
+    const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
 
+    // Step 1: Claude Vision analysis
     const analysisResponse = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1000,
@@ -60,25 +64,32 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
         ],
       }],
     });
-
     const analysisText = analysisResponse.content.map((c) => c.text || "").join("");
 
-    const imageResponse = await openai.images.generate({
-      model: "dall-e-3",
-      prompt: `A professional pool remodeling transformation photo. ${finishInfo.prompt} Keep the same camera angle and pool shape as the original. High quality, photorealistic.`,
-      n: 1,
-      size: "1024x1024",
-      quality: "standard",
-    });
+    // Step 2: Flux Kontext Pro — instruction-based image editing
+    // This edits the ACTUAL photo rather than generating a new one
+    const output = await replicate.run(
+      "black-forest-labs/flux-kontext-pro",
+      {
+        input: {
+          prompt: finishInfo.editPrompt,
+          input_image: imageDataUrl,
+          output_format: "jpg",
+          safety_tolerance: 5,
+        },
+      }
+    );
 
-    const imgFetch = await fetch(imageResponse.data[0].url);
+    // output is a URL — fetch and convert to base64
+    const imgUrl = Array.isArray(output) ? output[0] : output;
+    const imgFetch = await fetch(imgUrl);
     const imgBuffer = await imgFetch.arrayBuffer();
     const imgBase64 = Buffer.from(imgBuffer).toString("base64");
 
     res.json({
       success: true,
       analysisText,
-      generatedImage: `data:image/png;base64,${imgBase64}`,
+      generatedImage: `data:image/jpeg;base64,${imgBase64}`,
       finishLabel: finishInfo.label,
     });
   } catch (err) {

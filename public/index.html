@@ -8,18 +8,15 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Georgia, serif; background: #f7f5f0; color: #1a1814; min-height: 100vh; padding: 2.5rem 1rem; }
   .app { max-width: 820px; margin: 0 auto; }
-
   .header-tag { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: #2089B0; }
   .tag-text { font-size: 11px; letter-spacing: 0.12em; color: #8a8680; text-transform: uppercase; font-family: sans-serif; }
   h1 { font-size: 36px; font-weight: 400; color: #1a1814; line-height: 1.15; margin-bottom: 8px; }
   .subtitle { font-size: 15px; color: #6b6860; line-height: 1.6; font-family: sans-serif; max-width: 560px; margin-bottom: 2.5rem; }
-
   .step { margin-bottom: 1.5rem; }
   .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
   .step-num { width: 22px; height: 22px; border-radius: 50%; background: #1a1814; color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; flex-shrink: 0; }
   .step-label { font-size: 11px; letter-spacing: 0.08em; color: #8a8680; text-transform: uppercase; font-family: sans-serif; }
-
   .upload-zone { border: 1.5px dashed #c8c4bc; border-radius: 12px; background: #eeeae3; cursor: pointer; min-height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color 0.2s, background 0.2s; }
   .upload-zone:hover { border-color: #888780; background: #e4e0d9; }
   .upload-zone.has-image { border-style: solid; min-height: 0; background: transparent; cursor: default; }
@@ -30,7 +27,6 @@
   .upload-hint { font-size: 12px; color: #b0aba4; margin-top: 4px; font-family: sans-serif; }
   #previewImg { width: 100%; max-height: 320px; object-fit: cover; display: block; border-radius: 11px; }
   #changeBtn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-family: sans-serif; display: none; }
-
   .finish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .finish-card { border: 1.5px solid #d4d0c8; border-radius: 10px; padding: 12px; cursor: pointer; background: #fff; transition: border-color 0.15s, background 0.15s; }
   .finish-card:hover { border-color: #888780; }
@@ -38,32 +34,26 @@
   .swatch { height: 52px; border-radius: 7px; margin-bottom: 9px; }
   .finish-name { font-size: 13px; font-weight: 600; color: #1a1814; font-family: sans-serif; }
   .finish-sub { font-size: 11px; color: #8a8680; margin-top: 3px; font-family: sans-serif; }
-
   .run-btn { width: 100%; padding: 14px; border-radius: 9px; border: none; background: #d4d0c8; color: #a0a09a; font-size: 15px; font-family: sans-serif; font-weight: 500; cursor: not-allowed; transition: background 0.2s; margin-bottom: 1.5rem; }
   .run-btn.ready { background: #185FA5; color: #fff; cursor: pointer; }
   .run-btn.ready:hover { background: #0C447C; }
-
   .status { text-align: center; margin-bottom: 1rem; font-family: sans-serif; }
   .status p { font-size: 13px; color: #6b6860; margin-bottom: 8px; }
   .status p.error { color: #a32d2d; }
   .progress-bar { height: 3px; background: #e0dcd4; border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: #2089B0; border-radius: 2px; width: 0%; transition: width 0.5s; }
-
   .result { margin-top: 0.5rem; }
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .result-panel { border: 1px solid #d4d0c8; border-radius: 12px; overflow: hidden; }
   .panel-label { padding: 8px 12px; background: #eeeae3; font-size: 12px; color: #6b6860; font-family: sans-serif; }
   .result-panel img { width: 100%; display: block; max-height: 300px; object-fit: cover; }
-
   .analysis-box { border: 1px solid #d4d0c8; border-radius: 12px; padding: 1.1rem 1.3rem; background: #fff; margin-bottom: 14px; }
   .analysis-box h3 { font-size: 14px; font-weight: 600; color: #1a1814; margin-bottom: 10px; font-family: sans-serif; }
   .analysis-box p { font-size: 13px; line-height: 1.8; color: #6b6860; white-space: pre-wrap; font-family: sans-serif; }
-
   .download-btn { width: 100%; padding: 13px; border-radius: 9px; border: 1.5px solid #1a1814; background: transparent; color: #1a1814; font-size: 14px; font-family: sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .download-btn:hover { background: #f0ece4; }
-
+  .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .notice { font-size: 12px; color: #8a8680; font-family: sans-serif; text-align: center; margin-bottom: 1rem; }
-
   @media (max-width: 640px) {
     .finish-grid { grid-template-columns: repeat(2, 1fr); }
     .result-grid { grid-template-columns: 1fr; }
@@ -76,7 +66,6 @@
   <h1>AI Pool Remodeler</h1>
   <p class="subtitle">Upload a pool photo, choose a finish, and get an AI-powered before/after visualization with the pool filled with water.</p>
 
-  <!-- Step 1 -->
   <div class="step">
     <div class="step-header"><div class="step-num">1</div><span class="step-label">Upload pool photo</span></div>
     <div class="upload-zone" id="dropzone">
@@ -91,7 +80,6 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
   <div class="step">
     <div class="step-header"><div class="step-num">2</div><span class="step-label">Choose finish / material</span></div>
     <div class="finish-grid">
@@ -119,7 +107,6 @@
   </div>
 
   <p class="notice">⏱ Generation takes ~20–40 seconds — the AI edits your actual photo</p>
-
   <button class="run-btn" id="runBtn" disabled>Remodel this pool</button>
 
   <div class="status" id="statusArea" style="display:none;">
@@ -136,11 +123,14 @@
       <h3 id="analysisTitle">Pool assessment</h3>
       <p id="analysisText"></p>
     </div>
-    <button class="download-btn" id="downloadBtn">↓  Download report</button>
+    <button class="download-btn" id="downloadBtn">↓  Download PDF report</button>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+  const { jsPDF } = window.jspdf;
+
   let selectedFinish = null;
   let imageFile = null;
   let imageDataUrl = null;
@@ -194,17 +184,13 @@
 
   function checkReady() {
     const btn = document.getElementById('runBtn');
-    if (imageFile && selectedFinish) {
-      btn.disabled = false; btn.classList.add('ready');
-    } else {
-      btn.disabled = true; btn.classList.remove('ready');
-    }
+    if (imageFile && selectedFinish) { btn.disabled = false; btn.classList.add('ready'); }
+    else { btn.disabled = true; btn.classList.remove('ready'); }
   }
 
   function startProgress() {
     const fill = document.getElementById('progressFill');
-    let pct = 0;
-    fill.style.width = '0%';
+    let pct = 0; fill.style.width = '0%';
     progressInterval = setInterval(() => {
       pct = Math.min(pct + (Math.random() * 2.5), 88);
       fill.style.width = pct + '%';
@@ -258,45 +244,119 @@
     }
   });
 
-  document.getElementById('downloadBtn').addEventListener('click', () => {
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
     if (!resultData) return;
-    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    const html = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/>
-<title>Pool Remodel Report — ${date}</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: #fff; color: #1a1814; padding: 52px; max-width: 920px; margin: 0 auto; }
-  .header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1a1814; padding-bottom: 20px; margin-bottom: 36px; }
-  .brand { font-size: 26px; font-weight: 300; } .brand span { font-weight: 600; }
-  .meta { font-size: 12px; color: #8a8680; text-align: right; line-height: 1.9; }
-  .label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8a8680; margin-bottom: 14px; }
-  .badge { display: inline-block; background: #185FA5; color: #fff; font-size: 12px; padding: 5px 14px; border-radius: 20px; margin-bottom: 28px; }
-  .pair { display: flex; gap: 16px; margin-bottom: 36px; }
-  .box { flex: 1; border-radius: 10px; overflow: hidden; border: 1px solid #d4d0c8; }
-  .box-label { padding: 8px 14px; background: #f0ece4; font-size: 12px; color: #6b6860; }
-  .box img { width: 100%; display: block; max-height: 320px; object-fit: cover; }
-  .analysis { background: #f7f5f0; border-radius: 12px; padding: 28px 32px; }
-  .analysis h2 { font-size: 18px; font-weight: 400; margin-bottom: 16px; }
-  .analysis p { font-size: 14px; line-height: 1.9; color: #4a4844; white-space: pre-wrap; }
-  .footer { margin-top: 44px; padding-top: 16px; border-top: 1px solid #d4d0c8; font-size: 11px; color: #b0aba4; display: flex; justify-content: space-between; }
-</style></head><body>
-  <div class="header"><div class="brand">Pool <span>Remodel</span> Report</div><div class="meta"><div>${date}</div><div>AI Pool Remodeler</div></div></div>
-  <div class="label">Selected finish</div>
-  <div class="badge">${resultData.finishLabel}</div>
-  <div class="label">Before &amp; after</div>
-  <div class="pair">
-    <div class="box"><div class="box-label">Before</div><img src="${imageDataUrl}" /></div>
-    <div class="box"><div class="box-label">After — ${resultData.finishLabel}</div><img src="${resultData.generatedImage}" /></div>
-  </div>
-  <div class="analysis"><h2>Pool Assessment</h2><p>${resultData.analysisText.replace(/</g,'&lt;')}</p></div>
-  <div class="footer"><span>Powered by Claude Vision &amp; Flux Kontext Pro</span><span>${date}</span></div>
-</body></html>`;
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `pool-remodel-report-${Date.now()}.html`;
-    a.click(); URL.revokeObjectURL(url);
+    const btn = document.getElementById('downloadBtn');
+    btn.disabled = true;
+    btn.textContent = 'Generating PDF…';
+
+    try {
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = 18;
+      const contentW = pageW - margin * 2;
+      const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      // ── Header bar ──
+      doc.setFillColor(26, 24, 20);
+      doc.rect(0, 0, pageW, 22, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('Pool Remodel Report', margin, 14);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(date, pageW - margin, 14, { align: 'right' });
+
+      // ── Finish badge ──
+      let y = 32;
+      doc.setFillColor(24, 95, 165);
+      doc.roundedRect(margin, y, 52, 7, 2, 2, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text(resultData.finishLabel, margin + 4, y + 5);
+
+      // ── Before / After images ──
+      y += 14;
+      doc.setTextColor(140, 134, 128);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setCharSpace(1);
+      doc.text('BEFORE & AFTER', margin, y);
+      doc.setCharSpace(0);
+
+      y += 5;
+      const imgW = (contentW - 6) / 2;
+      const imgH = imgW * 0.68;
+
+      // Helper: get image dimensions from dataUrl
+      function addImg(dataUrl, x, imgY, w, h) {
+        const fmt = dataUrl.startsWith('data:image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(dataUrl, fmt, x, imgY, w, h, undefined, 'FAST');
+      }
+
+      // Before image
+      doc.setDrawColor(212, 208, 200);
+      doc.setLineWidth(0.3);
+      doc.rect(margin, y, imgW, imgH + 7);
+      doc.setFillColor(238, 234, 227);
+      doc.rect(margin, y, imgW, 7, 'F');
+      doc.setTextColor(107, 104, 96);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('Before', margin + 3, y + 4.8);
+      addImg(imageDataUrl, margin, y + 7, imgW, imgH);
+
+      // After image
+      const x2 = margin + imgW + 6;
+      doc.rect(x2, y, imgW, imgH + 7);
+      doc.setFillColor(238, 234, 227);
+      doc.rect(x2, y, imgW, 7, 'F');
+      doc.setTextColor(107, 104, 96);
+      doc.text('After — ' + resultData.finishLabel, x2 + 3, y + 4.8);
+      addImg(resultData.generatedImage, x2, y + 7, imgW, imgH);
+
+      // ── Analysis section ──
+      y += imgH + 7 + 10;
+      doc.setTextColor(140, 134, 128);
+      doc.setFontSize(7.5);
+      doc.setCharSpace(1);
+      doc.text('POOL ASSESSMENT', margin, y);
+      doc.setCharSpace(0);
+
+      y += 6;
+      // Assessment box background
+      const analysisText = resultData.analysisText;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.5);
+      doc.setTextColor(74, 72, 68);
+      const lines = doc.splitTextToSize(analysisText, contentW - 10);
+      const boxH = lines.length * 5.2 + 10;
+      doc.setFillColor(247, 245, 240);
+      doc.setDrawColor(212, 208, 200);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(margin, y, contentW, boxH, 3, 3, 'FD');
+      doc.text(lines, margin + 5, y + 7);
+
+      // ── Footer ──
+      y = pageH - 12;
+      doc.setDrawColor(212, 208, 200);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageW - margin, y);
+      doc.setTextColor(176, 171, 164);
+      doc.setFontSize(7.5);
+      doc.text('Powered by Claude Vision & Flux Kontext Pro', margin, y + 5);
+      doc.text(date, pageW - margin, y + 5, { align: 'right' });
+
+      doc.save(`pool-remodel-report-${Date.now()}.pdf`);
+    } catch(err) {
+      alert('PDF generation failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '↓  Download PDF report';
+    }
   });
 </script>
 </body>

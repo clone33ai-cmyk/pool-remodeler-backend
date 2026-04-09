@@ -31,7 +31,7 @@
   #previewImg { width: 100%; max-height: 320px; object-fit: cover; display: block; border-radius: 11px; }
   #changeBtn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-family: sans-serif; display: none; }
 
-  .finish-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .finish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
   .finish-card { border: 1.5px solid #d4d0c8; border-radius: 10px; padding: 12px; cursor: pointer; background: #fff; transition: border-color 0.15s, background 0.15s; }
   .finish-card:hover { border-color: #888780; }
   .finish-card.selected { border: 2px solid #185FA5; background: #EEF5FC; }
@@ -47,13 +47,13 @@
   .status p { font-size: 13px; color: #6b6860; margin-bottom: 8px; }
   .status p.error { color: #a32d2d; }
   .progress-bar { height: 3px; background: #e0dcd4; border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: #2089B0; border-radius: 2px; width: 0%; transition: width 0.3s; }
+  .progress-fill { height: 100%; background: #2089B0; border-radius: 2px; width: 0%; transition: width 0.5s; }
 
   .result { margin-top: 0.5rem; }
   .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .result-panel { border: 1px solid #d4d0c8; border-radius: 12px; overflow: hidden; }
   .panel-label { padding: 8px 12px; background: #eeeae3; font-size: 12px; color: #6b6860; font-family: sans-serif; }
-  .result-panel img { width: 100%; display: block; max-height: 280px; object-fit: cover; }
+  .result-panel img { width: 100%; display: block; max-height: 300px; object-fit: cover; }
 
   .analysis-box { border: 1px solid #d4d0c8; border-radius: 12px; padding: 1.1rem 1.3rem; background: #fff; margin-bottom: 14px; }
   .analysis-box h3 { font-size: 14px; font-weight: 600; color: #1a1814; margin-bottom: 10px; font-family: sans-serif; }
@@ -62,8 +62,10 @@
   .download-btn { width: 100%; padding: 13px; border-radius: 9px; border: 1.5px solid #1a1814; background: transparent; color: #1a1814; font-size: 14px; font-family: sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .download-btn:hover { background: #f0ece4; }
 
-  @media (max-width: 600px) {
-    .finish-grid { grid-template-columns: 1fr; }
+  .notice { font-size: 12px; color: #8a8680; font-family: sans-serif; text-align: center; margin-bottom: 1rem; }
+
+  @media (max-width: 640px) {
+    .finish-grid { grid-template-columns: repeat(2, 1fr); }
     .result-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -72,7 +74,7 @@
 <div class="app">
   <div class="header-tag"><div class="dot"></div><span class="tag-text">Pool Remodeling Visualizer</span></div>
   <h1>AI Pool Remodeler</h1>
-  <p class="subtitle">Upload a pool photo, choose a finish material, and get an AI-powered assessment and before/after visualization.</p>
+  <p class="subtitle">Upload a pool photo, choose a finish, and get an AI-powered before/after visualization with the pool filled with water.</p>
 
   <!-- Step 1 -->
   <div class="step">
@@ -96,20 +98,27 @@
       <div class="finish-card" data-finish="kahlua">
         <div class="swatch" style="background: linear-gradient(135deg, #C4A882, #A8855A, #8B6914);"></div>
         <div class="finish-name">Kahlua</div>
-        <div class="finish-sub">Spray deck · Warm sand tones</div>
+        <div class="finish-sub">Spray deck · Warm sand</div>
       </div>
       <div class="finish-card" data-finish="dessert">
         <div class="swatch" style="background: linear-gradient(135deg, #E8D5B0, #D4B896, #C0A07C);"></div>
         <div class="finish-name">Dessert</div>
-        <div class="finish-sub">Spray deck · Pale cream tones</div>
+        <div class="finish-sub">Spray deck · Pale cream</div>
       </div>
       <div class="finish-card" data-finish="tile">
         <div class="swatch" style="background: linear-gradient(135deg, #1A6B8A, #2089B0, #5BB0D0);"></div>
         <div class="finish-name">Blue Gemstone 6×6</div>
-        <div class="finish-sub">Pool tile · National Pool Tile</div>
+        <div class="finish-sub">Pool tile · Ocean blue</div>
+      </div>
+      <div class="finish-card" data-finish="plaster">
+        <div class="swatch" style="background: linear-gradient(135deg, #ffffff, #e8f4f8, #b8dce8); border: 1px solid #d4d0c8;"></div>
+        <div class="finish-name">White Plaster</div>
+        <div class="finish-sub">Interior · Quartz finish</div>
       </div>
     </div>
   </div>
+
+  <p class="notice">⏱ Generation takes ~20–40 seconds — the AI edits your actual photo</p>
 
   <button class="run-btn" id="runBtn" disabled>Remodel this pool</button>
 
@@ -138,7 +147,6 @@
   let resultData = null;
   let progressInterval = null;
 
-  // File handling
   const fileInput = document.getElementById('fileInput');
   const dropzone = document.getElementById('dropzone');
   const placeholder = document.getElementById('placeholder');
@@ -175,7 +183,6 @@
     reader.readAsDataURL(file);
   }
 
-  // Finish selection
   document.querySelectorAll('.finish-card').forEach(card => {
     card.addEventListener('click', () => {
       document.querySelectorAll('.finish-card').forEach(c => c.classList.remove('selected'));
@@ -188,43 +195,38 @@
   function checkReady() {
     const btn = document.getElementById('runBtn');
     if (imageFile && selectedFinish) {
-      btn.disabled = false;
-      btn.classList.add('ready');
+      btn.disabled = false; btn.classList.add('ready');
     } else {
-      btn.disabled = true;
-      btn.classList.remove('ready');
+      btn.disabled = true; btn.classList.remove('ready');
     }
   }
 
-  // Progress bar animation
   function startProgress() {
     const fill = document.getElementById('progressFill');
     let pct = 0;
     fill.style.width = '0%';
     progressInterval = setInterval(() => {
-      pct = Math.min(pct + (Math.random() * 3), 88);
+      pct = Math.min(pct + (Math.random() * 2.5), 88);
       fill.style.width = pct + '%';
-    }, 400);
+    }, 600);
   }
   function stopProgress() {
     clearInterval(progressInterval);
     document.getElementById('progressFill').style.width = '100%';
   }
 
-  // Run remodel
   document.getElementById('runBtn').addEventListener('click', async () => {
     const btn = document.getElementById('runBtn');
     const statusArea = document.getElementById('statusArea');
     const statusText = document.getElementById('statusText');
     const resultArea = document.getElementById('resultArea');
 
-    btn.disabled = true;
-    btn.classList.remove('ready');
+    btn.disabled = true; btn.classList.remove('ready');
     btn.textContent = 'Working…';
     resultArea.style.display = 'none';
     statusArea.style.display = 'block';
     statusText.className = '';
-    statusText.textContent = 'Analyzing pool and generating remodel — this takes about 30 seconds…';
+    statusText.textContent = 'Editing your pool photo with AI — filling with water and applying finish (~30 seconds)…';
     startProgress();
 
     try {
@@ -246,19 +248,16 @@
       document.getElementById('analysisTitle').textContent = 'Pool assessment — ' + data.finishLabel;
       document.getElementById('analysisText').textContent = data.analysisText;
       resultArea.style.display = 'block';
-
     } catch (err) {
       stopProgress();
       statusText.className = 'error';
       statusText.textContent = 'Error: ' + err.message;
     } finally {
-      btn.disabled = false;
-      btn.classList.add('ready');
+      btn.disabled = false; btn.classList.add('ready');
       btn.textContent = 'Remodel again';
     }
   });
 
-  // Download report
   document.getElementById('downloadBtn').addEventListener('click', () => {
     if (!resultData) return;
     const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -291,9 +290,8 @@
     <div class="box"><div class="box-label">After — ${resultData.finishLabel}</div><img src="${resultData.generatedImage}" /></div>
   </div>
   <div class="analysis"><h2>Pool Assessment</h2><p>${resultData.analysisText.replace(/</g,'&lt;')}</p></div>
-  <div class="footer"><span>Powered by Claude Vision &amp; DALL-E 3</span><span>${date}</span></div>
+  <div class="footer"><span>Powered by Claude Vision &amp; Flux Kontext Pro</span><span>${date}</span></div>
 </body></html>`;
-
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

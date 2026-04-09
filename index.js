@@ -10,24 +10,34 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// IMPORTANT: Every prompt must include "fill pool with clean blue water" 
+// because the AI needs to be explicitly told the pool should be full.
+const WATER_INSTRUCTION = "IMPORTANT: The pool must be completely filled with clean, sparkling crystal-blue water — this is mandatory. ";
+
 const finishDetails = {
   kahlua: {
     label: "Kahlua",
-    description: "SGM Kahlua spray deck — warm sandy coffee-brown textured concrete",
-    editPrompt: "Replace the pool deck and coping surround with SGM Kahlua spray deck finish: smooth textured concrete in warm coffee-caramel sandy brown color (#C4A882). Keep everything else exactly the same — the pool water, the house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the deck/surround surface material and color.",
-    negativePrompt: "changed pool water, different background, different trees, different house, changed sky, blurry, distorted",
+    description: "SGM Kahlua spray deck — warm sandy coffee-brown textured concrete deck",
+    editPrompt: WATER_INSTRUCTION + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Resurface the pool deck and coping with SGM Kahlua spray deck — smooth textured concrete in warm coffee-caramel sandy brown (#C4A882). Keep the house, trees, sky, fence, and all surroundings pixel-perfect identical. Only the pool water and deck surface should change.",
+    negativePrompt: "empty pool, dry pool, no water, different background, changed trees, changed house, blurry",
   },
   dessert: {
     label: "Dessert",
-    description: "SGM Dessert spray deck — pale cream warm ivory textured concrete",
-    editPrompt: "Replace the pool deck and coping surround with SGM Dessert spray deck finish: smooth textured concrete in pale cream warm ivory color (#E8D5B0). Keep everything else exactly the same — the pool water, the house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the deck/surround surface material and color.",
-    negativePrompt: "changed pool water, different background, different trees, different house, changed sky, blurry, distorted",
+    description: "SGM Dessert spray deck — pale cream warm ivory textured concrete deck",
+    editPrompt: WATER_INSTRUCTION + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Resurface the pool deck and coping with SGM Dessert spray deck — smooth textured concrete in pale cream warm ivory color (#E8D5B0). Keep the house, trees, sky, fence, and all surroundings pixel-perfect identical. Only the pool water and deck surface should change.",
+    negativePrompt: "empty pool, dry pool, no water, different background, changed trees, changed house, blurry",
   },
   tile: {
     label: "Blue Gemstone 6×6",
-    description: "National Pool Tile Blue Gemstone 6×6 — glossy deep ocean-blue ceramic tile",
-    editPrompt: "Replace the pool interior walls and waterline with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles: deep ocean-blue sapphire color in a clean grid pattern, reflective glossy finish. Keep everything else exactly the same — the pool deck, house, trees, sky, furniture, and all surroundings must remain completely unchanged. Only change the pool interior tile surface.",
-    negativePrompt: "changed deck, different background, different trees, different house, changed sky, blurry, distorted",
+    description: "National Pool Tile Blue Gemstone 6×6 — glossy deep ocean-blue ceramic tile on pool interior",
+    editPrompt: WATER_INSTRUCTION + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace the pool interior walls and waterline band with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles — deep sapphire ocean-blue in a clean grid pattern, highly reflective glossy finish. Keep the pool deck, house, trees, sky, fence, and all surroundings pixel-perfect identical. Only the pool water and interior tile surface should change.",
+    negativePrompt: "empty pool, dry pool, no water, different deck, changed trees, changed house, blurry",
+  },
+  plaster: {
+    label: "White Plaster & Quartz",
+    description: "White Plaster & Quartz finish — bright white smooth interior giving the pool a vivid turquoise-blue water color",
+    editPrompt: WATER_INSTRUCTION + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue turquoise water — the white plaster below makes the water appear vivid bright turquoise-blue. (2) Resurface the pool interior with smooth bright white plaster and quartz finish — pure white smooth surface on all interior walls and floor. Keep the pool deck, house, trees, sky, fence, and all surroundings pixel-perfect identical. Only the pool water and interior plaster surface should change.",
+    negativePrompt: "empty pool, dry pool, no water, yellow water, dirty water, different deck, changed trees, changed house, blurry",
   },
 };
 
@@ -60,14 +70,13 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
         role: "user",
         content: [
           { type: "image", source: { type: "base64", media_type: mediaType, data: imageBase64 } },
-          { type: "text", text: `You are a professional pool remodeling consultant. Analyze this pool photo and provide a brief assessment in 3 short sections:\n\n1. CURRENT CONDITION: What is the state of the pool? (cracking, staining, fading, algae, outdated finish, etc.)\n2. RECOMMENDED WORK: What remodeling work is needed based on what you see?\n3. EXPECTED TRANSFORMATION: How will applying ${finishInfo.description} improve this pool specifically?\n\nKeep each section to 2-3 sentences. Be specific about what you see.` },
+          { type: "text", text: `You are a professional pool remodeling consultant. Analyze this pool photo and provide a brief assessment in 3 short sections:\n\n1. CURRENT CONDITION: What is the state of the pool? (cracking, staining, fading, algae, outdated finish, empty, etc.)\n2. RECOMMENDED WORK: What remodeling work is needed based on what you see?\n3. EXPECTED TRANSFORMATION: How will applying ${finishInfo.description} improve this pool specifically?\n\nKeep each section to 2-3 sentences. Be specific about what you see.` },
         ],
       }],
     });
     const analysisText = analysisResponse.content.map((c) => c.text || "").join("");
 
     // Step 2: Flux Kontext Pro — instruction-based image editing
-    // This edits the ACTUAL photo rather than generating a new one
     const output = await replicate.run(
       "black-forest-labs/flux-kontext-pro",
       {
@@ -80,7 +89,6 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
       }
     );
 
-    // output is a URL — fetch and convert to base64
     const imgUrl = Array.isArray(output) ? output[0] : output;
     const imgFetch = await fetch(imgUrl);
     const imgBuffer = await imgFetch.arrayBuffer();

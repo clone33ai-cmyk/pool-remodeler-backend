@@ -19,6 +19,7 @@
   .step-num { width: 22px; height: 22px; border-radius: 50%; background: #1a1814; color: #fff; font-size: 11px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; flex-shrink: 0; }
   .step-label { font-size: 11px; letter-spacing: 0.08em; color: #8a8680; text-transform: uppercase; font-family: sans-serif; }
 
+  /* Upload */
   .upload-zone { border: 1.5px dashed #c8c4bc; border-radius: 12px; background: #eeeae3; cursor: pointer; min-height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color 0.2s, background 0.2s; }
   .upload-zone:hover { border-color: #888780; background: #e4e0d9; }
   .upload-zone.has-image { border-style: solid; min-height: 0; background: transparent; cursor: default; }
@@ -30,16 +31,21 @@
   #previewImg { width: 100%; max-height: 300px; object-fit: cover; display: block; border-radius: 11px; }
   #changeBtn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; font-family: sans-serif; display: none; }
 
-  /* Finish selection — multi-select */
-  .finish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  /* Finish groups */
+  .finish-group { margin-bottom: 14px; }
+  .group-label { font-size: 10px; font-family: sans-serif; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #b0aba4; margin-bottom: 8px; padding-left: 2px; }
+  .finish-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .finish-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .finish-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
   .finish-card { border: 1.5px solid #d4d0c8; border-radius: 10px; padding: 12px; cursor: pointer; background: #fff; transition: border-color 0.15s, background 0.15s; position: relative; user-select: none; }
   .finish-card:hover { border-color: #888780; }
   .finish-card.selected { border: 2px solid #185FA5; background: #EEF5FC; }
   .check-badge { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%; background: #185FA5; color: #fff; font-size: 11px; display: none; align-items: center; justify-content: center; font-family: sans-serif; font-weight: 700; }
   .finish-card.selected .check-badge { display: flex; }
-  .swatch { height: 52px; border-radius: 7px; margin-bottom: 9px; }
-  .finish-name { font-size: 13px; font-weight: 600; color: #1a1814; font-family: sans-serif; }
-  .finish-sub { font-size: 11px; color: #8a8680; margin-top: 3px; font-family: sans-serif; }
+  .swatch { height: 48px; border-radius: 7px; margin-bottom: 8px; }
+  .finish-name { font-size: 12px; font-weight: 600; color: #1a1814; font-family: sans-serif; }
+  .finish-sub { font-size: 10px; color: #8a8680; margin-top: 2px; font-family: sans-serif; }
   .select-hint { font-size: 11px; color: #8a8680; font-family: sans-serif; margin-top: 8px; }
 
   .run-btn { width: 100%; padding: 14px; border-radius: 9px; border: none; background: #d4d0c8; color: #a0a09a; font-size: 15px; font-family: sans-serif; font-weight: 500; cursor: not-allowed; transition: background 0.2s; margin-bottom: 1.5rem; }
@@ -53,41 +59,44 @@
   .progress-fill { height: 100%; background: #2089B0; border-radius: 2px; width: 0%; transition: width 0.5s; }
   .progress-label { font-size: 11px; color: #b0aba4; font-family: sans-serif; }
 
-  /* Results */
   .results-section { margin-top: 0.5rem; }
   .before-box { border: 1px solid #d4d0c8; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
   .panel-label { padding: 8px 12px; background: #eeeae3; font-size: 12px; color: #6b6860; font-family: sans-serif; }
   .before-box img { width: 100%; display: block; max-height: 300px; object-fit: cover; }
 
-  .variants-grid { display: grid; gap: 20px; }
+  .variants-grid { display: grid; gap: 16px; }
   .variants-grid.cols-1 { grid-template-columns: 1fr; }
   .variants-grid.cols-2 { grid-template-columns: 1fr 1fr; }
   .variants-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
   .variants-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+  .variants-grid.cols-5 { grid-template-columns: 1fr 1fr; }
+  .variants-grid.cols-6 { grid-template-columns: 1fr 1fr; }
+  .variants-grid.cols-7 { grid-template-columns: 1fr 1fr; }
+  .variants-grid.cols-8 { grid-template-columns: 1fr 1fr; }
 
   .variant-card { border: 1px solid #d4d0c8; border-radius: 12px; overflow: hidden; background: #fff; }
-  .variant-card .panel-label { background: #eeeae3; }
-  .variant-card img { width: 100%; display: block; object-fit: cover; max-height: 260px; }
-  .variant-analysis { padding: 12px 14px; }
-  .variant-analysis h4 { font-size: 12px; font-weight: 600; color: #1a1814; margin-bottom: 6px; font-family: sans-serif; }
-  .variant-analysis p { font-size: 12px; line-height: 1.7; color: #6b6860; font-family: sans-serif; white-space: pre-wrap; }
+  .variant-card img { width: 100%; display: block; object-fit: cover; max-height: 240px; }
+  .variant-analysis { padding: 10px 12px; }
+  .variant-analysis h4 { font-size: 11px; font-weight: 600; color: #1a1814; margin-bottom: 5px; font-family: sans-serif; }
+  .variant-analysis p { font-size: 11px; line-height: 1.65; color: #6b6860; font-family: sans-serif; white-space: pre-wrap; }
 
   .pending-card { border: 1px dashed #d4d0c8; border-radius: 12px; overflow: hidden; background: #f7f5f0; }
-  .pending-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; gap: 10px; }
-  .spinner { width: 24px; height: 24px; border: 2px solid #d4d0c8; border-top-color: #2089B0; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .pending-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 180px; gap: 10px; }
+  .spinner { width: 22px; height: 22px; border: 2px solid #d4d0c8; border-top-color: #2089B0; border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .pending-label { font-size: 12px; color: #8a8680; font-family: sans-serif; }
+  .pending-finish-label { font-size: 12px; font-weight: 600; color: #6b6860; font-family: sans-serif; }
+  .pending-sub { font-size: 11px; color: #b0aba4; font-family: sans-serif; }
 
   .actions-row { display: flex; gap: 10px; margin-top: 20px; }
   .download-btn { flex: 1; padding: 13px; border-radius: 9px; border: 1.5px solid #1a1814; background: transparent; color: #1a1814; font-size: 14px; font-family: sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .download-btn:hover { background: #f0ece4; }
   .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
   .notice { font-size: 12px; color: #8a8680; font-family: sans-serif; text-align: center; margin-bottom: 1rem; }
 
   @media (max-width: 640px) {
-    .finish-grid { grid-template-columns: repeat(2, 1fr); }
-    .variants-grid.cols-2, .variants-grid.cols-3, .variants-grid.cols-4 { grid-template-columns: 1fr; }
+    .finish-grid-4, .finish-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .variants-grid.cols-2, .variants-grid.cols-3, .variants-grid.cols-4,
+    .variants-grid.cols-5, .variants-grid.cols-6, .variants-grid.cols-7, .variants-grid.cols-8 { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -95,9 +104,8 @@
 <div class="app">
   <div class="header-tag"><div class="dot"></div><span class="tag-text">Pool Remodeling Visualizer</span></div>
   <h1>AI Pool Remodeler</h1>
-  <p class="subtitle">Upload a pool photo, pick one or more finishes, and get AI-powered before/after visualizations — all rendered in parallel.</p>
+  <p class="subtitle">Upload a pool photo, pick any combination of finishes and materials, and get AI-powered before/after visualizations — all rendered in parallel.</p>
 
-  <!-- Step 1 -->
   <div class="step">
     <div class="step-header"><div class="step-num">1</div><span class="step-label">Upload pool photo</span></div>
     <div class="upload-zone" id="dropzone">
@@ -112,39 +120,91 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
   <div class="step">
-    <div class="step-header"><div class="step-num">2</div><span class="step-label">Choose finishes</span></div>
-    <div class="finish-grid">
-      <div class="finish-card" data-finish="kahlua">
-        <div class="check-badge">✓</div>
-        <div class="swatch" style="background: linear-gradient(135deg, #C4A882, #A8855A, #8B6914);"></div>
-        <div class="finish-name">Kahlua</div>
-        <div class="finish-sub">Spray deck · Warm sand</div>
-      </div>
-      <div class="finish-card" data-finish="dessert">
-        <div class="check-badge">✓</div>
-        <div class="swatch" style="background: linear-gradient(135deg, #E8D5B0, #D4B896, #C0A07C);"></div>
-        <div class="finish-name">Dessert</div>
-        <div class="finish-sub">Spray deck · Pale cream</div>
-      </div>
-      <div class="finish-card" data-finish="tile">
-        <div class="check-badge">✓</div>
-        <div class="swatch" style="background: linear-gradient(135deg, #1A6B8A, #2089B0, #5BB0D0);"></div>
-        <div class="finish-name">Blue Gemstone 6×6</div>
-        <div class="finish-sub">Pool tile · Ocean blue</div>
-      </div>
-      <div class="finish-card" data-finish="plaster">
-        <div class="check-badge">✓</div>
-        <div class="swatch" style="background: linear-gradient(135deg, #ffffff, #e8f4f8, #b8dce8); border: 1px solid #d4d0c8;"></div>
-        <div class="finish-name">White Plaster</div>
-        <div class="finish-sub">Interior · Quartz finish</div>
+    <div class="step-header"><div class="step-num">2</div><span class="step-label">Choose finishes &amp; materials</span></div>
+
+    <div class="finish-group">
+      <div class="group-label">Spray Deck</div>
+      <div class="finish-grid-2">
+        <div class="finish-card" data-finish="kahlua">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #C4A882, #A8855A, #8B6914);"></div>
+          <div class="finish-name">Kahlua</div>
+          <div class="finish-sub">Warm sandy brown</div>
+        </div>
+        <div class="finish-card" data-finish="dessert">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #E8D5B0, #D4B896, #C0A07C);"></div>
+          <div class="finish-name">Dessert</div>
+          <div class="finish-sub">Pale cream ivory</div>
+        </div>
       </div>
     </div>
-    <div class="select-hint">Click to select one or more finishes — they'll all be generated in parallel</div>
+
+    <div class="finish-group">
+      <div class="group-label">Plaster &amp; Interior</div>
+      <div class="finish-grid-3">
+        <div class="finish-card" data-finish="plaster_white">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #ffffff, #e8f4f8, #c8e8f0); border: 1px solid #d4d0c8;"></div>
+          <div class="finish-name">White Plaster</div>
+          <div class="finish-sub">Quartz · Turquoise water</div>
+        </div>
+        <div class="finish-card" data-finish="plaster_lightblue">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #a8d8ea, #7ec8e3, #5ab4d6);"></div>
+          <div class="finish-name">Light Blue Plaster</div>
+          <div class="finish-sub">Sky blue · Aqua water</div>
+        </div>
+        <div class="finish-card" data-finish="plaster_dark">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #2c3e50, #1a252f, #0d1b2a);"></div>
+          <div class="finish-name">Dark Plaster</div>
+          <div class="finish-sub">Charcoal · Deep navy water</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="finish-group">
+      <div class="group-label">Pool Tile</div>
+      <div class="finish-grid-2" style="max-width: 50%;">
+        <div class="finish-card" data-finish="tile">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(135deg, #1A6B8A, #2089B0, #5BB0D0);"></div>
+          <div class="finish-name">Blue Gemstone 6×6</div>
+          <div class="finish-sub">NPT · Ocean blue gloss</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="finish-group">
+      <div class="group-label">Coping — Lueders Limestone</div>
+      <div class="finish-grid-2">
+        <div class="finish-card" data-finish="coping_lueders_buff">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(180deg, #e8d9b8 0%, #d4c49a 40%, #c8b888 100%); position:relative; overflow:hidden;">
+            <div style="position:absolute;bottom:0;left:0;right:0;height:30%;background:rgba(0,0,0,0.08);"></div>
+            <div style="position:absolute;top:35%;left:0;right:0;height:2px;background:rgba(255,255,255,0.3);"></div>
+          </div>
+          <div class="finish-name">Lueders Buff</div>
+          <div class="finish-sub">Cream cap stone · Flat slab coping</div>
+        </div>
+        <div class="finish-card" data-finish="coping_lueders_charcoal">
+          <div class="check-badge">✓</div>
+          <div class="swatch" style="background: linear-gradient(180deg, #5a5a5a 0%, #3d3d3d 40%, #2e2e2e 100%); position:relative; overflow:hidden;">
+            <div style="position:absolute;bottom:0;left:0;right:0;height:30%;background:rgba(0,0,0,0.2);"></div>
+            <div style="position:absolute;top:35%;left:0;right:0;height:2px;background:rgba(255,255,255,0.08);"></div>
+          </div>
+          <div class="finish-name">Lueders Charcoal</div>
+          <div class="finish-sub">Dark grey cap stone · Flat slab coping</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="select-hint">Select one or more — all chosen finishes generate simultaneously</div>
   </div>
 
-  <p class="notice">⏱ ~30 seconds per finish — all selected finishes run simultaneously</p>
+  <p class="notice">⏱ ~30 sec per finish · All selected finishes run at the same time</p>
   <button class="run-btn" id="runBtn" disabled>Remodel this pool</button>
 
   <div class="status" id="statusArea" style="display:none;">
@@ -168,26 +228,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
   const { jsPDF } = window.jspdf;
-
   let selectedFinishes = new Set();
-  let imageFile = null;
-  let imageDataUrl = null;
-  let completedResults = {};
-  let progressInterval = null;
+  let imageFile = null, imageDataUrl = null, completedResults = {}, progressInterval = null;
 
-  // --- Upload ---
-  const fileInput = document.getElementById('fileInput');
-  const dropzone = document.getElementById('dropzone');
-  fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
-  dropzone.addEventListener('dragover', e => e.preventDefault());
-  dropzone.addEventListener('drop', e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
+  const LABELS = {
+    kahlua: 'Kahlua', dessert: 'Dessert', tile: 'Blue Gemstone 6×6',
+    plaster_white: 'White Plaster', plaster_lightblue: 'Light Blue Plaster', plaster_dark: 'Dark Plaster',
+    coping_lueders_buff: 'Lueders Buff Coping', coping_lueders_charcoal: 'Lueders Charcoal Coping'
+  };
+
+  // Upload
+  document.getElementById('fileInput').addEventListener('change', e => handleFile(e.target.files[0]));
+  document.getElementById('dropzone').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('dropzone').addEventListener('drop', e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
   document.getElementById('changeBtn').addEventListener('click', e => {
     e.stopPropagation();
     imageFile = null; imageDataUrl = null;
     document.getElementById('previewImg').style.display = 'none';
     document.getElementById('placeholder').style.display = 'block';
     document.getElementById('changeBtn').style.display = 'none';
-    dropzone.classList.remove('has-image');
+    document.getElementById('dropzone').classList.remove('has-image');
     document.getElementById('resultsSection').style.display = 'none';
     checkReady();
   });
@@ -202,13 +262,13 @@
       document.getElementById('previewImg').style.display = 'block';
       document.getElementById('placeholder').style.display = 'none';
       document.getElementById('changeBtn').style.display = 'block';
-      dropzone.classList.add('has-image');
+      document.getElementById('dropzone').classList.add('has-image');
       checkReady();
     };
     reader.readAsDataURL(file);
   }
 
-  // --- Multi-select finishes ---
+  // Multi-select
   document.querySelectorAll('.finish-card').forEach(card => {
     card.addEventListener('click', () => {
       const f = card.dataset.finish;
@@ -222,32 +282,21 @@
     const btn = document.getElementById('runBtn');
     const ok = imageFile && selectedFinishes.size > 0;
     btn.disabled = !ok; btn.classList.toggle('ready', ok);
-    if (ok) {
-      const n = selectedFinishes.size;
-      btn.textContent = n === 1 ? 'Remodel this pool' : `Remodel with ${n} finishes`;
-    } else { btn.textContent = 'Remodel this pool'; }
+    const n = selectedFinishes.size;
+    btn.textContent = n > 1 ? `Remodel with ${n} finishes` : 'Remodel this pool';
   }
 
-  // --- Progress ---
   function startProgress() {
     const fill = document.getElementById('progressFill');
     let pct = 0; fill.style.width = '0%';
-    progressInterval = setInterval(() => {
-      pct = Math.min(pct + Math.random() * 1.5, 85);
-      fill.style.width = pct + '%';
-    }, 700);
+    progressInterval = setInterval(() => { pct = Math.min(pct + Math.random() * 1.5, 85); fill.style.width = pct + '%'; }, 700);
   }
-  function stopProgress() {
-    clearInterval(progressInterval);
-    document.getElementById('progressFill').style.width = '100%';
-  }
+  function stopProgress() { clearInterval(progressInterval); document.getElementById('progressFill').style.width = '100%'; }
 
-  // --- Run ---
   document.getElementById('runBtn').addEventListener('click', async () => {
     const btn = document.getElementById('runBtn');
     const finishes = Array.from(selectedFinishes);
-    btn.disabled = true; btn.classList.remove('ready');
-    btn.textContent = 'Working…';
+    btn.disabled = true; btn.classList.remove('ready'); btn.textContent = 'Working…';
     completedResults = {};
 
     document.getElementById('statusArea').style.display = 'block';
@@ -256,27 +305,23 @@
     document.getElementById('progressLabel').textContent = `0 of ${finishes.length} complete`;
     startProgress();
 
-    // Build results section immediately with pending cards
     document.getElementById('beforeImg').src = imageDataUrl;
+    const cols = Math.min(finishes.length <= 3 ? finishes.length : 2, 3);
     const grid = document.getElementById('variantsGrid');
-    grid.className = 'variants-grid cols-' + Math.min(finishes.length, finishes.length === 4 ? 2 : finishes.length);
-    grid.innerHTML = '';
-    finishes.forEach(f => {
-      const label = finishLabel(f);
-      grid.innerHTML += `
-        <div class="pending-card" id="card-${f}">
-          <div class="panel-label">After — ${label}</div>
-          <div class="pending-inner">
-            <div class="spinner"></div>
-            <div class="pending-label">Generating…</div>
-          </div>
-        </div>`;
-    });
+    grid.className = `variants-grid cols-${finishes.length}`;
+    grid.innerHTML = finishes.map(f => `
+      <div class="pending-card" id="card-${f}">
+        <div class="panel-label">After — ${LABELS[f]}</div>
+        <div class="pending-inner">
+          <div class="spinner"></div>
+          <div class="pending-finish-label">${LABELS[f]}</div>
+          <div class="pending-sub">Generating…</div>
+        </div>
+      </div>`).join('');
     document.getElementById('resultsSection').style.display = 'block';
 
-    // Fire all requests in parallel
     let doneCount = 0;
-    const promises = finishes.map(async (finish) => {
+    await Promise.all(finishes.map(async (finish) => {
       try {
         const formData = new FormData();
         formData.append('image', imageFile);
@@ -284,22 +329,16 @@
         const resp = await fetch('/remodel', { method: 'POST', body: formData });
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.error || 'Server error');
-
         completedResults[finish] = data;
         doneCount++;
         document.getElementById('progressLabel').textContent = `${doneCount} of ${finishes.length} complete`;
-
-        // Replace pending card with result
         const card = document.getElementById('card-' + finish);
         if (card) {
           card.className = 'variant-card';
           card.innerHTML = `
             <div class="panel-label">After — ${data.finishLabel}</div>
             <img src="${data.generatedImage}" />
-            <div class="variant-analysis">
-              <h4>Assessment</h4>
-              <p>${data.analysisText}</p>
-            </div>`;
+            <div class="variant-analysis"><h4>Assessment</h4><p>${data.analysisText}</p></div>`;
         }
       } catch (err) {
         doneCount++;
@@ -308,26 +347,21 @@
         if (card) {
           card.className = 'variant-card';
           card.innerHTML = `
-            <div class="panel-label">After — ${finishLabel(finish)}</div>
+            <div class="panel-label">After — ${LABELS[finish]}</div>
             <div class="pending-inner" style="min-height:120px;">
-              <div class="pending-label" style="color:#a32d2d;">Error: ${err.message}</div>
+              <div class="pending-sub" style="color:#a32d2d;">Error: ${err.message}</div>
             </div>`;
         }
       }
-    });
+    }));
 
-    await Promise.all(promises);
     stopProgress();
     document.getElementById('statusArea').style.display = 'none';
     btn.disabled = false; btn.classList.add('ready');
     btn.textContent = `Remodel with ${finishes.length} finish${finishes.length > 1 ? 'es' : ''}`;
   });
 
-  function finishLabel(key) {
-    return { kahlua: 'Kahlua', dessert: 'Dessert', tile: 'Blue Gemstone 6×6', plaster: 'White Plaster' }[key] || key;
-  }
-
-  // --- PDF Download ---
+  // PDF
   document.getElementById('downloadBtn').addEventListener('click', async () => {
     const btn = document.getElementById('downloadBtn');
     btn.disabled = true; btn.textContent = 'Generating PDF…';
@@ -335,109 +369,71 @@
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageW = doc.internal.pageSize.getWidth();
       const pageH = doc.internal.pageSize.getHeight();
-      const margin = 18;
-      const contentW = pageW - margin * 2;
+      const margin = 18, contentW = pageW - margin * 2;
       const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+      function addHeader() {
+        doc.setFillColor(26, 24, 20); doc.rect(0, 0, pageW, 22, 'F');
+        doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(14);
+        doc.text('Pool Remodel Report', margin, 14);
+        doc.setFont('helvetica','normal'); doc.setFontSize(9);
+        doc.text(date, pageW - margin, 14, { align: 'right' });
+      }
       function addImg(dataUrl, x, y, w, h) {
         const fmt = dataUrl.startsWith('data:image/png') ? 'PNG' : 'JPEG';
         doc.addImage(dataUrl, fmt, x, y, w, h, undefined, 'FAST');
       }
 
-      function header(isFirst) {
-        doc.setFillColor(26, 24, 20);
-        doc.rect(0, 0, pageW, 22, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.text('Pool Remodel Report', margin, 14);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.text(date, pageW - margin, 14, { align: 'right' });
-      }
-
-      header(true);
+      addHeader();
       let y = 30;
 
-      // Before image
-      doc.setTextColor(140, 134, 128);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
-      doc.setCharSpace(1);
-      doc.text('ORIGINAL POOL', margin, y);
-      doc.setCharSpace(0);
-      y += 4;
-      const beforeH = 55;
-      doc.setDrawColor(212, 208, 200); doc.setLineWidth(0.3);
+      // Before
+      doc.setTextColor(140,134,128); doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setCharSpace(1);
+      doc.text('ORIGINAL POOL', margin, y); doc.setCharSpace(0); y += 4;
+      const beforeH = 52;
+      doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
       doc.rect(margin, y, contentW, beforeH + 7);
-      doc.setFillColor(238, 234, 227);
-      doc.rect(margin, y, contentW, 7, 'F');
-      doc.setTextColor(107, 104, 96); doc.setFontSize(8);
-      doc.text('Before', margin + 3, y + 4.8);
-      addImg(imageDataUrl, margin, y + 7, contentW, beforeH);
+      doc.setFillColor(238,234,227); doc.rect(margin, y, contentW, 7, 'F');
+      doc.setTextColor(107,104,96); doc.setFontSize(8); doc.text('Before', margin+3, y+4.8);
+      addImg(imageDataUrl, margin, y+7, contentW, beforeH);
       y += beforeH + 7 + 10;
 
-      // Each finish result
-      const finishes = Object.keys(completedResults);
-      for (let i = 0; i < finishes.length; i++) {
-        const finish = finishes[i];
-        const data = completedResults[finish];
+      for (const [finish, data] of Object.entries(completedResults)) {
         if (!data) continue;
+        if (y + 110 > pageH - 15) { doc.addPage(); addHeader(); y = 30; }
 
-        // New page if not enough space (need at least 120mm)
-        if (y + 120 > pageH - 15) {
-          doc.addPage();
-          header(false);
-          y = 30;
-        }
+        doc.setFillColor(24,95,165); doc.roundedRect(margin, y, 60, 7, 2, 2, 'F');
+        doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(8);
+        doc.text(data.finishLabel, margin+4, y+5); y += 11;
 
-        // Finish badge
-        doc.setFillColor(24, 95, 165);
-        doc.roundedRect(margin, y, 58, 7, 2, 2, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(8);
-        doc.text(data.finishLabel, margin + 4, y + 5);
-        y += 11;
+        const afterH = 60;
+        doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
+        doc.rect(margin, y, contentW, afterH+7);
+        doc.setFillColor(238,234,227); doc.rect(margin, y, contentW, 7, 'F');
+        doc.setTextColor(107,104,96); doc.setFontSize(8); doc.setFont('helvetica','normal');
+        doc.text('After — '+data.finishLabel, margin+3, y+4.8);
+        addImg(data.generatedImage, margin, y+7, contentW, afterH);
+        y += afterH + 7 + 5;
 
-        // After image
-        const afterH = 65;
-        doc.setDrawColor(212, 208, 200); doc.setLineWidth(0.3);
-        doc.rect(margin, y, contentW, afterH + 7);
-        doc.setFillColor(238, 234, 227);
-        doc.rect(margin, y, contentW, 7, 'F');
-        doc.setTextColor(107, 104, 96); doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-        doc.text('After — ' + data.finishLabel, margin + 3, y + 4.8);
-        addImg(data.generatedImage, margin, y + 7, contentW, afterH);
-        y += afterH + 7 + 6;
-
-        // Assessment text
-        doc.setTextColor(140, 134, 128); doc.setFontSize(7.5); doc.setCharSpace(1);
-        doc.text('POOL ASSESSMENT', margin, y);
-        doc.setCharSpace(0); y += 5;
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(74, 72, 68);
-        const lines = doc.splitTextToSize(data.analysisText, contentW - 10);
+        doc.setTextColor(140,134,128); doc.setFontSize(7.5); doc.setCharSpace(1);
+        doc.text('POOL ASSESSMENT', margin, y); doc.setCharSpace(0); y += 5;
+        doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(74,72,68);
+        const lines = doc.splitTextToSize(data.analysisText, contentW-10);
         const boxH = lines.length * 4.8 + 10;
-        doc.setFillColor(247, 245, 240); doc.setDrawColor(212, 208, 200); doc.setLineWidth(0.3);
+        doc.setFillColor(247,245,240); doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
         doc.roundedRect(margin, y, contentW, boxH, 3, 3, 'FD');
-        doc.text(lines, margin + 5, y + 7);
+        doc.text(lines, margin+5, y+7);
         y += boxH + 14;
       }
 
-      // Footer on last page
       const footerY = pageH - 12;
-      doc.setDrawColor(212, 208, 200); doc.setLineWidth(0.3);
-      doc.line(margin, footerY, pageW - margin, footerY);
-      doc.setTextColor(176, 171, 164); doc.setFontSize(7.5);
-      doc.text('Powered by Claude Vision & Flux Kontext Pro', margin, footerY + 5);
-      doc.text(date, pageW - margin, footerY + 5, { align: 'right' });
-
+      doc.setDrawColor(212,208,200); doc.setLineWidth(0.3); doc.line(margin, footerY, pageW-margin, footerY);
+      doc.setTextColor(176,171,164); doc.setFontSize(7.5);
+      doc.text('Powered by Claude Vision & Flux Kontext Pro', margin, footerY+5);
+      doc.text(date, pageW-margin, footerY+5, { align: 'right' });
       doc.save(`pool-remodel-report-${Date.now()}.pdf`);
-    } catch(err) {
-      alert('PDF generation failed: ' + err.message);
-    } finally {
-      btn.disabled = false; btn.textContent = '↓  Download PDF report';
-    }
+    } catch(err) { alert('PDF error: '+err.message); }
+    finally { btn.disabled = false; btn.textContent = '↓  Download PDF report'; }
   });
 </script>
 </body>

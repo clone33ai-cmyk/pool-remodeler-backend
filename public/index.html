@@ -321,11 +321,14 @@
     document.getElementById('resultsSection').style.display = 'block';
 
     let doneCount = 0;
-    await Promise.all(finishes.map(async (finish) => {
+    // Stagger requests by 8s each to avoid Replicate rate limits
+    const STAGGER_MS = 8000;
+    await Promise.all(finishes.map(async (finish, idx) => {
       try {
         const formData = new FormData();
         formData.append('image', imageFile);
         formData.append('finish', finish);
+        formData.append('delayMs', idx * STAGGER_MS);
         const resp = await fetch('/remodel', { method: 'POST', body: formData });
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.error || 'Server error');

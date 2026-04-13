@@ -13,6 +13,31 @@ const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } });
 
 const WATER = "IMPORTANT: The pool must be completely filled with clean sparkling crystal-blue water — this is mandatory. ";
 
+// Retry Replicate calls on 429 rate limit with exponential backoff
+async function replicateWithRetry(replicate, model, input, maxRetries = 5) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await replicate.run(model, { input });
+    } catch (err) {
+      const is429 = err.message && (
+        err.message.includes("429") ||
+        err.message.includes("Too Many Requests") ||
+        err.message.includes("throttled")
+      );
+      if (is429 && attempt < maxRetries) {
+        const retryMatch = err.message.match(/retry_after["\s:]+(\d+)/);
+        const waitMs = retryMatch
+          ? (parseInt(retryMatch[1]) * 1000 + 1000)
+          : (Math.pow(2, attempt + 1) * 3000); // 6s, 12s, 24s, 48s...
+        console.log(`Rate limited on attempt ${attempt + 1}, waiting ${waitMs}ms...`);
+        await new Promise(r => setTimeout(r, waitMs));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 const finishDetails = {
   kahlua: {
     label: "Kahlua",
@@ -26,8 +51,8 @@ const finishDetails = {
   },
   tile: {
     label: "Blue Gemstone 6×6",
-    description: "National Pool Tile Blue Gemstone 6×6 — glossy deep ocean-blue ceramic tile",
-    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace the pool interior walls and waterline with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles — deep sapphire ocean-blue in a clean grid pattern. Keep the pool deck, house, trees, sky identical. Only the pool water and interior tile change.",
+    description: "National Pool Tile Blue Gemstone 6×6 — glossy deep ocean-blue 6x6 ceramic tile on the waterline band only",
+    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace ONLY the narrow waterline tile band — the horizontal strip of tile running along the pool walls right at the waterline where the water meets the wall — with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles in deep sapphire ocean-blue, clean grid pattern. The waterline tile band is typically 6 inches tall. Do NOT retile the entire pool interior walls or floor. Keep the pool deck, coping, house, trees, sky identical. Only the waterline tile strip and pool water change.",
   },
   plaster_white: {
     label: "White Plaster & Quartz",
@@ -47,12 +72,12 @@ const finishDetails = {
   coping_lueders_buff: {
     label: "Lueders Buff Coping",
     description: "Lueders buff limestone pool coping — smooth flat-cut rectangular slabs of warm cream/beige Texas limestone sitting as the cap directly on top of the pool edge",
-    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace ONLY the pool coping — the flat horizontal stone cap/slab that sits right on top of the pool wall edge — with Lueders buff limestone: smooth honed flat-cut rectangular slabs, warm cream and beige color (#D4C49A), clean sawn edges with a slight bullnose lip overhanging the pool, subtle natural limestone grain with soft tan variation, joints between slabs visible. This is exactly the style of flat limestone pool coping cap stone. Do NOT change the pool deck surface, pool interior, tile, house, trees, or sky. Only the coping cap stones and pool water change.",
+    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace ONLY the pool coping — the flat horizontal stone cap/slab that sits right on top of the pool wall edge — with Lueders buff limestone: smooth honed flat-cut rectangular slabs, warm cream and beige color (#D4C49A), clean sawn edges with a slight bullnose lip overhanging the pool, subtle natural limestone grain with soft tan variation, joints between slabs visible. Do NOT change the pool deck surface, pool interior, tile, house, trees, or sky. Only the coping cap stones and pool water change.",
   },
   coping_lueders_charcoal: {
     label: "Lueders Charcoal Coping",
     description: "Lueders charcoal limestone pool coping — smooth flat-cut rectangular slabs of dark grey Texas limestone sitting as the cap directly on top of the pool edge",
-    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace ONLY the pool coping — the flat horizontal stone cap/slab that sits right on top of the pool wall edge — with Lueders charcoal limestone: smooth honed flat-cut rectangular slabs, dark charcoal grey color (#3D3D3D), clean sawn edges with a slight bullnose lip overhanging the pool, subtle natural limestone grain with dark tone variation, joints between slabs visible. This is exactly the style of flat limestone pool coping cap stone. Do NOT change the pool deck surface, pool interior, tile, house, trees, or sky. Only the coping cap stones and pool water change.",
+    editPrompt: WATER + "Edit this pool photo: (1) Fill the pool completely with clean sparkling crystal-blue water. (2) Replace ONLY the pool coping — the flat horizontal stone cap/slab that sits right on top of the pool wall edge — with Lueders charcoal limestone: smooth honed flat-cut rectangular slabs, dark charcoal grey color (#3D3D3D), clean sawn edges with a slight bullnose lip overhanging the pool, subtle natural limestone grain with dark tone variation, joints between slabs visible. Do NOT change the pool deck surface, pool interior, tile, house, trees, or sky. Only the coping cap stones and pool water change.",
   },
 };
 
@@ -65,11 +90,16 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
 
-    const { finish } = req.body;
+    const { finish, delayMs } = req.body;
     const imageFile = req.file;
 
     if (!imageFile) return res.status(400).json({ error: "No image provided" });
     if (!finish || !finishDetails[finish]) return res.status(400).json({ error: "Invalid finish selected" });
+
+    // Stagger requests from frontend to reduce simultaneous hits
+    if (delayMs && parseInt(delayMs) > 0) {
+      await new Promise(r => setTimeout(r, parseInt(delayMs)));
+    }
 
     const finishInfo = finishDetails[finish];
 
@@ -96,13 +126,12 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     });
     const analysisText = analysisResponse.content.map((c) => c.text || "").join("");
 
-    const output = await replicate.run("black-forest-labs/flux-kontext-pro", {
-      input: {
-        prompt: finishInfo.editPrompt,
-        input_image: imageDataUrl,
-        output_format: "jpg",
-        safety_tolerance: 5,
-      },
+    // Use retry wrapper for Replicate
+    const output = await replicateWithRetry(replicate, "black-forest-labs/flux-kontext-pro", {
+      prompt: finishInfo.editPrompt,
+      input_image: imageDataUrl,
+      output_format: "jpg",
+      safety_tolerance: 5,
     });
 
     const imgUrl = Array.isArray(output) ? output[0] : output;

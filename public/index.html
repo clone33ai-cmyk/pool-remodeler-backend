@@ -3,157 +3,322 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI Pool Remodeler</title>
+<title>AI Pool Remodeler — Plano, TX</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: #f7f5f0; color: #1a1814; min-height: 100vh; padding: 2rem 1rem 4rem; }
-  .app { max-width: 960px; margin: 0 auto; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; color:#1a1814; min-height:100vh; }
 
-  /* Header */
-  .header { margin-bottom: 2.5rem; }
-  .header-tag { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #2089B0; flex-shrink: 0; }
-  .tag-text { font-size: 11px; letter-spacing: 0.12em; color: #8a8680; text-transform: uppercase; font-family: sans-serif; }
-  h1 { font-size: 34px; font-weight: 400; line-height: 1.15; margin-bottom: 6px; }
-  .subtitle { font-size: 15px; color: #6b6860; font-family: sans-serif; line-height: 1.6; max-width: 520px; }
+/* Hero */
+.hero { background:linear-gradient(135deg,#0a1628 0%,#1a3a5c 50%,#0d2137 100%); color:#fff; padding:3rem 1.5rem 2.5rem; text-align:center; }
+.hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:5px 14px; font-size:12px; letter-spacing:0.06em; margin-bottom:1.2rem; }
+.star { color:#F4B942; }
+.hero h1 { font-size:clamp(24px,5vw,40px); font-weight:700; line-height:1.15; margin-bottom:10px; }
+.hero h1 span { color:#5BB8D4; }
+.hero-sub { font-size:15px; color:rgba(255,255,255,0.75); max-width:480px; margin:0 auto 1.5rem; line-height:1.6; }
+.hero-quotes { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.hero-quote { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:8px 14px; font-size:12px; color:rgba(255,255,255,0.85); font-style:italic; max-width:280px; }
 
-  /* Upload */
-  .upload-zone { border: 1.5px dashed #c8c4bc; border-radius: 14px; background: #eeeae3; cursor: pointer; min-height: 180px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: border-color 0.2s, background 0.2s; margin-bottom: 1.25rem; }
-  .upload-zone:hover { border-color: #888780; background: #e8e4dd; }
-  .upload-zone.has-image { border-style: solid; border-color: #c8c4bc; min-height: 0; cursor: default; background: transparent; }
-  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-placeholder { text-align: center; padding: 2.5rem; pointer-events: none; }
-  .upload-icon { font-size: 32px; color: #b0aba4; margin-bottom: 10px; }
-  .upload-text { font-size: 15px; color: #6b6860; font-family: sans-serif; margin-bottom: 4px; }
-  .upload-hint { font-size: 12px; color: #b0aba4; font-family: sans-serif; }
-  #previewImg { width: 100%; max-height: 340px; object-fit: cover; display: block; border-radius: 13px; }
-  #changeBtn { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 7px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: sans-serif; display: none; z-index: 2; }
+/* Main */
+.main { max-width:960px; margin:0 auto; padding:2rem 1rem 4rem; }
+.section-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#8a8680; margin-bottom:10px; }
 
-  /* Run button */
-  .run-btn { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #d4d0c8; color: #a0a09a; font-size: 16px; font-family: sans-serif; font-weight: 500; cursor: not-allowed; transition: background 0.2s; margin-bottom: 2rem; }
-  .run-btn.ready { background: #185FA5; color: #fff; cursor: pointer; }
-  .run-btn.ready:hover { background: #0C447C; }
+/* Upload */
+.upload-zone { border:2px dashed #c8c4bc; border-radius:14px; background:#fff; cursor:pointer; min-height:180px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; transition:border-color 0.2s,background 0.2s; margin-bottom:1rem; }
+.upload-zone:hover { border-color:#185FA5; background:#f0f7ff; }
+.upload-zone.has-image { border-style:solid; border-color:#c8c4bc; min-height:0; cursor:default; background:transparent; }
+.upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+.upload-ph { text-align:center; padding:2.5rem; pointer-events:none; }
+.upload-icon { font-size:36px; margin-bottom:10px; }
+.upload-title { font-size:16px; font-weight:500; color:#1a1814; margin-bottom:4px; }
+.upload-hint { font-size:12px; color:#b0aba4; }
+#previewImg { width:100%; max-height:340px; object-fit:cover; display:block; border-radius:12px; }
+#changeBtn { position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:7px; padding:5px 14px; font-size:12px; cursor:pointer; display:none; z-index:2; }
 
-  /* Status */
-  .status-bar { margin-bottom: 1.5rem; font-family: sans-serif; }
-  .status-msg { font-size: 13px; color: #6b6860; margin-bottom: 8px; text-align: center; }
-  .status-msg.error { color: #a32d2d; }
-  .progress-track { height: 3px; background: #e0dcd4; border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
-  .progress-fill { height: 100%; background: #2089B0; border-radius: 2px; width: 0%; transition: width 0.6s; }
-  .progress-count { font-size: 11px; color: #b0aba4; text-align: center; }
+/* Run btn */
+.run-btn { width:100%; padding:16px; border-radius:12px; border:none; background:#c8c4bc; color:#888; font-size:16px; font-weight:600; cursor:not-allowed; transition:all 0.2s; margin-bottom:0.5rem; }
+.run-btn.ready { background:linear-gradient(135deg,#185FA5,#2089B0); color:#fff; cursor:pointer; box-shadow:0 4px 16px rgba(24,95,165,0.3); }
+.run-btn.ready:hover { box-shadow:0 6px 20px rgba(24,95,165,0.4); transform:translateY(-1px); }
+.run-note { font-size:11px; color:#b0aba4; text-align:center; margin-bottom:2rem; }
 
-  /* Results */
-  .results-wrap { display: none; }
-  .before-strip { border: 1px solid #d4d0c8; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
-  .strip-label { padding: 8px 14px; background: #eeeae3; font-size: 12px; color: #6b6860; font-family: sans-serif; }
-  .before-strip img { width: 100%; display: block; max-height: 320px; object-fit: cover; }
+/* Progress */
+.prog-wrap { display:none; margin-bottom:1.5rem; }
+.prog-msg { font-size:13px; color:#6b6860; text-align:center; margin-bottom:8px; }
+.prog-track { height:4px; background:#e0dcd4; border-radius:2px; overflow:hidden; margin-bottom:5px; }
+.prog-fill { height:100%; background:linear-gradient(90deg,#185FA5,#2089B0); border-radius:2px; width:0%; transition:width 0.6s; }
+.prog-count { font-size:11px; color:#b0aba4; text-align:center; }
 
-  .section-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #8a8680; font-family: sans-serif; margin-bottom: 14px; }
+/* Results */
+.results-wrap { display:none; }
+.before-box { border:1px solid #d4d0c8; border-radius:12px; overflow:hidden; margin-bottom:28px; }
+.box-label { padding:9px 14px; background:#eeeae3; font-size:12px; color:#6b6860; font-weight:500; }
+.before-box img { width:100%; display:block; max-height:300px; object-fit:cover; }
+.concepts-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#8a8680; margin-bottom:14px; }
+.packages-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:24px; }
+.pkg-card { border-radius:14px; overflow:hidden; background:#fff; border:1px solid #e0dcd4; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.pkg-header { padding:12px 14px 10px; border-bottom:1px solid #f0ece4; }
+.pkg-name { font-size:15px; font-weight:600; color:#1a1814; }
+.pkg-tagline { font-size:11px; color:#8a8680; margin-top:3px; line-height:1.5; }
+.pkg-card img { width:100%; display:block; max-height:220px; object-fit:cover; }
+.pkg-body { padding:10px 14px 12px; }
+.pkg-desc { font-size:12px; line-height:1.7; color:#4a4844; margin-bottom:8px; }
+.pkg-tags { display:flex; flex-wrap:wrap; gap:4px; }
+.pkg-tag { font-size:10px; padding:2px 8px; border-radius:10px; background:#f0ece4; color:#5a5450; }
+.pkg-pending { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:160px; gap:10px; background:#f7f5f0; }
+.spinner { width:22px; height:22px; border:2px solid #d4d0c8; border-top-color:#2089B0; border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.pend-name { font-size:13px; font-weight:600; color:#8a8680; }
+.pend-sub { font-size:11px; color:#b0aba4; }
 
-  .packages-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+/* ── Pricing packages ── */
+.pricing-section { margin:36px 0; }
+.pricing-section h2 { font-size:20px; font-weight:700; margin-bottom:4px; }
+.pricing-section .pricing-sub { font-size:13px; color:#6b6860; margin-bottom:20px; }
+.pricing-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.price-card { border-radius:14px; overflow:hidden; border:1px solid #e0dcd4; background:#fff; }
+.price-card-top { padding:14px 16px 10px; }
+.price-tier { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+.price-tier.bronze { color:#cd7f32; }
+.price-tier.silver { color:#909090; }
+.price-tier.gold   { color:#d4930a; }
+.price-name { font-size:16px; font-weight:700; color:#1a1814; margin-bottom:2px; }
+.price-amount { font-size:26px; font-weight:800; color:#185FA5; margin-bottom:6px; }
+.price-includes { font-size:11px; color:#6b6860; line-height:1.7; }
+.price-card-bottom { background:#f7f5f0; padding:10px 16px; border-top:1px solid #e0dcd4; }
+.price-badge { display:inline-block; padding:3px 10px; border-radius:10px; font-size:10px; font-weight:600; }
+.price-badge.bronze { background:#FDF0E6; color:#8a4000; }
+.price-badge.silver { background:#F0F4F8; color:#445566; }
+.price-badge.gold   { background:#FEF3CD; color:#7a5000; }
 
-  .pkg-card { border: 1px solid #d4d0c8; border-radius: 14px; overflow: hidden; background: #fff; }
-  .pkg-header { padding: 10px 14px 8px; background: #fff; border-bottom: 1px solid #f0ece4; }
-  .pkg-name { font-size: 14px; font-weight: 500; color: #1a1814; margin-bottom: 2px; }
-  .pkg-tagline { font-size: 11px; color: #8a8680; font-family: sans-serif; line-height: 1.5; }
-  .pkg-img-wrap { position: relative; }
-  .pkg-card img { width: 100%; display: block; object-fit: cover; max-height: 220px; }
-  .pkg-body { padding: 10px 14px 12px; }
-  .pkg-desc { font-size: 12px; line-height: 1.7; color: #6b6860; font-family: sans-serif; }
+/* ── Tile showcase ── */
+.tile-section { margin:36px 0; background:#fff; border-radius:16px; border:1px solid #e0dcd4; padding:24px; }
+.tile-section h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
+.tile-section .tile-sub { font-size:13px; color:#6b6860; margin-bottom:20px; }
+.tile-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.tile-card { border:1px solid #e0dcd4; border-radius:12px; overflow:hidden; }
+.tile-swatch { height:110px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.tile-swatch-label { position:absolute; bottom:8px; left:10px; font-size:10px; font-weight:700; color:rgba(255,255,255,0.9); letter-spacing:0.08em; background:rgba(0,0,0,0.35); padding:2px 8px; border-radius:6px; }
+.tile-info { padding:12px 14px 14px; }
+.tile-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+.tile-size { font-size:11px; color:#8a8680; margin-bottom:10px; line-height:1.5; }
+.tile-link { display:inline-flex; align-items:center; gap:5px; font-size:12px; color:#185FA5; text-decoration:none; font-weight:600; padding:6px 12px; background:#EEF5FC; border-radius:7px; transition:background 0.15s; }
+.tile-link:hover { background:#dbeafe; }
 
-  /* Pending state */
-  .pkg-pending { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 160px; gap: 10px; background: #f7f5f0; }
-  .spinner { width: 22px; height: 22px; border: 2px solid #d4d0c8; border-top-color: #2089B0; border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .pending-name { font-size: 13px; font-weight: 500; color: #8a8680; font-family: sans-serif; }
-  .pending-sub { font-size: 11px; color: #b0aba4; font-family: sans-serif; }
+/* ── Resources ── */
+.resources { margin:28px 0; background:#fff; border-radius:16px; border:1px solid #e0dcd4; padding:22px; }
+.resources h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
+.resources .res-sub { font-size:13px; color:#6b6860; margin-bottom:16px; }
+.res-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.res-link { display:flex; align-items:center; gap:12px; padding:13px 14px; border:1px solid #e0dcd4; border-radius:10px; text-decoration:none; color:#1a1814; transition:background 0.15s,border-color 0.15s; }
+.res-link:hover { background:#f0f7ff; border-color:#185FA5; }
+.res-icon { font-size:22px; flex-shrink:0; }
+.res-title { font-weight:600; font-size:13px; color:#1a1814; margin-bottom:2px; }
+.res-desc { font-size:11px; color:#8a8680; line-height:1.4; }
 
-  /* Tags on cards */
-  .pkg-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-  .tag { font-size: 10px; font-family: sans-serif; padding: 2px 7px; border-radius: 10px; background: #f0ece4; color: #6b6860; }
+/* Download */
+.download-btn { width:100%; padding:15px; border-radius:12px; border:2px solid #1a1814; background:transparent; color:#1a1814; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.15s; margin-top:4px; }
+.download-btn:hover { background:#1a1814; color:#fff; }
+.download-btn:disabled { opacity:0.4; cursor:not-allowed; }
 
-  /* Download */
-  .download-btn { width: 100%; padding: 14px; border-radius: 10px; border: 1.5px solid #1a1814; background: transparent; color: #1a1814; font-size: 14px; font-family: sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
-  .download-btn:hover { background: #f0ece4; }
-  .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.footer { text-align:center; padding:2rem 1rem; font-size:12px; color:#b0aba4; }
 
-  .notice { font-size: 11px; color: #b0aba4; font-family: sans-serif; text-align: center; margin-bottom: 1.25rem; }
-
-  @media (max-width: 600px) {
-    .packages-grid { grid-template-columns: 1fr; }
-    h1 { font-size: 26px; }
-  }
+@media (max-width:580px) {
+  .packages-grid,.pricing-grid,.tile-grid,.res-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
-<div class="app">
 
-  <div class="header">
-    <div class="header-tag"><div class="dot"></div><span class="tag-text">AI Pool Remodeling</span></div>
-    <h1>Pool Remodeler</h1>
-    <p class="subtitle">Upload a photo of your pool and get 6 fully-designed remodel concepts — each combining deck, plaster, coping, and tile.</p>
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge"><span class="star">★</span> Favorite designer for homeowners in Plano, TX</div>
+  <h1>Pool Remodeling<br/><span>That Sells Homes Fast</span></h1>
+  <p class="hero-sub">Upload your pool photo and instantly see 6 AI-generated remodel concepts, plus our full pricing packages.</p>
+  <div class="hero-quotes">
+    <div class="hero-quote">"This pool design sells houses fast in Plano, TX"</div>
+    <div class="hero-quote">"Favorite designer for homeowners in the DFW area"</div>
   </div>
+</div>
 
+<div class="main">
+
+  <!-- Upload -->
+  <div class="section-label" style="margin-top:1.5rem;">Upload your pool photo</div>
   <div class="upload-zone" id="dropzone">
-    <input type="file" id="fileInput" accept="image/*" />
-    <div class="upload-placeholder" id="placeholder">
-      <div class="upload-icon">↑</div>
-      <div class="upload-text">Click or drag your pool photo here</div>
+    <input type="file" id="fileInput" accept="image/*"/>
+    <div class="upload-ph" id="placeholder">
+      <div class="upload-icon">📸</div>
+      <div class="upload-title">Drop your pool photo here</div>
       <div class="upload-hint">JPG, PNG, WEBP, HEIC — up to 50MB</div>
     </div>
-    <img id="previewImg" />
+    <img id="previewImg"/>
     <button id="changeBtn" type="button">Change photo</button>
   </div>
 
-  <p class="notice">6 design concepts · ~30 sec each · all generated simultaneously</p>
-  <button class="run-btn" id="runBtn" disabled>Generate 6 remodel concepts</button>
+  <button class="run-btn" id="runBtn" disabled>Generate My Remodel Concepts</button>
+  <p class="run-note">6 design concepts · AI-generated visualization · ~30 sec each</p>
 
-  <div class="status-bar" id="statusBar" style="display:none;">
-    <div class="status-msg" id="statusMsg"></div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-count" id="progressCount"></div>
+  <div class="prog-wrap" id="progWrap">
+    <div class="prog-msg" id="progMsg">Generating your remodel concepts…</div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-count" id="progCount">0 of 6 complete</div>
   </div>
 
+  <!-- Results -->
   <div class="results-wrap" id="resultsWrap">
-    <div class="before-strip">
-      <div class="strip-label">Original pool</div>
-      <img id="beforeImg" />
+    <div class="before-box">
+      <div class="box-label">Original pool</div>
+      <img id="beforeImg"/>
     </div>
-    <div class="section-title">6 remodel concepts</div>
+    <div class="concepts-label">6 remodel concepts</div>
     <div class="packages-grid" id="packagesGrid"></div>
-    <button class="download-btn" id="downloadBtn">↓ Download PDF report</button>
+    <button class="download-btn" id="downloadBtn">↓ Download PDF Report</button>
+  </div>
+
+  <!-- Pricing Packages -->
+  <div class="pricing-section">
+    <h2>Our Remodeling Packages</h2>
+    <p class="pricing-sub">Real pricing for every budget — from a single upgrade to a complete luxury transformation.</p>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-card-top">
+          <div class="price-tier bronze">🥉 Bronze</div>
+          <div class="price-name">New Tile</div>
+          <div class="price-amount">$5,500</div>
+          <div class="price-includes">Blue Gemstone 6×6 glossy waterline tile band · Fresh water fill · High-impact entry upgrade</div>
+        </div>
+        <div class="price-card-bottom"><span class="price-badge bronze">Best ROI entry point</span></div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-card-top">
+          <div class="price-tier bronze">🥉 Bronze</div>
+          <div class="price-name">Deck Resurfacing</div>
+          <div class="price-amount">$6,500</div>
+          <div class="price-includes">Kahlua spray deck · Lueders buff limestone coping · Transforms curb appeal instantly</div>
+        </div>
+        <div class="price-card-bottom"><span class="price-badge bronze">Most popular starter</span></div>
+      </div>
+
+      <div class="price-card">
+        <div class="price-card-top">
+          <div class="price-tier silver">🥈 Silver</div>
+          <div class="price-name">Tile &amp; Plaster</div>
+          <div class="price-amount">$16,500</div>
+          <div class="price-includes">White plaster interior · 1×1 mosaic waterline tile · Lueders buff coping · Dessert spray deck</div>
+        </div>
+        <div class="price-card-bottom"><span class="price-badge silver">Full interior + exterior</span></div>
+      </div>
+
+      <div class="price-card" style="border:2px solid #d4930a;">
+        <div class="price-card-top">
+          <div class="price-tier gold">🥇 Gold</div>
+          <div class="price-name">Tile &amp; Upgraded Plaster</div>
+          <div class="price-amount">$19,500</div>
+          <div class="price-includes">Dark premium plaster · Blue Gemstone 6×6 tile · Lueders charcoal coping · Kahlua deck</div>
+        </div>
+        <div class="price-card-bottom"><span class="price-badge gold">⭐ Sells homes fast</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tile Showcase -->
+  <div class="tile-section">
+    <h2>Tile Options — National Pool Tile</h2>
+    <p class="tile-sub">We exclusively use National Pool Tile — the industry's most trusted brand. Two sizes to suit every style.</p>
+    <div class="tile-grid">
+
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:linear-gradient(135deg,#1a5f80,#2089B0,#4bb0d0);">
+          <!-- 6x6 tile grid simulation -->
+          <svg width="100%" height="100%" style="position:absolute;inset:0;" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="t6" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="none"/><rect x="1" y="1" width="38" height="38" fill="rgba(255,255,255,0.08)" rx="1"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#t6)"/>
+          </svg>
+          <div class="tile-swatch-label">6" × 6" TILE</div>
+        </div>
+        <div class="tile-info">
+          <div class="tile-name">Blue Gemstone 6×6</div>
+          <div class="tile-size">6" × 6" glossy ceramic · Deep sapphire ocean-blue · Bold, classic waterline statement · Used in Bronze &amp; Gold packages</div>
+          <a class="tile-link" href="https://www.nationalpoolTile.com/collections/6x6-pool-tile" target="_blank">View 6×6 Samples →</a>
+        </div>
+      </div>
+
+      <div class="tile-card">
+        <div class="tile-swatch" style="background:linear-gradient(135deg,#5a9ec0,#7ec8e3,#a8d8ea);">
+          <!-- 1x1 mosaic grid simulation -->
+          <svg width="100%" height="100%" style="position:absolute;inset:0;" xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id="t1" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="none"/><rect x="0.5" y="0.5" width="11" height="11" fill="rgba(255,255,255,0.12)" rx="0.5"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#t1)"/>
+          </svg>
+          <div class="tile-swatch-label">1" × 1" MOSAIC</div>
+        </div>
+        <div class="tile-info">
+          <div class="tile-name">1×1 Mosaic Tile</div>
+          <div class="tile-size">1" × 1" glossy mosaic · Classic small-format waterline band · Elegant and timeless · Used in Silver package</div>
+          <a class="tile-link" href="https://www.nationalpoolTile.com/collections/1x1-pool-tile" target="_blank">View 1×1 Mosaic Samples →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="resources">
+    <h2>Learn About Pool Finishes</h2>
+    <p class="res-sub">Everything you need to understand your remodel options — straight from the source.</p>
+    <div class="res-grid">
+      <a class="res-link" href="https://www.nationalpoolTile.com/pages/pool-plaster" target="_blank">
+        <div class="res-icon">🏊</div>
+        <div><div class="res-title">Pool Plaster Guide</div><div class="res-desc">National Pool Tile — plaster types, colors &amp; finishes explained</div></div>
+      </a>
+      <a class="res-link" href="https://www.nationalpoolTile.com/collections/pool-tile" target="_blank">
+        <div class="res-icon">🟦</div>
+        <div><div class="res-title">Full Tile Catalog</div><div class="res-desc">Browse all National Pool Tile collections &amp; colors</div></div>
+      </a>
+      <a class="res-link" href="https://www.nationalpoolTile.com/pages/quartz-plaster" target="_blank">
+        <div class="res-icon">💎</div>
+        <div><div class="res-title">Quartz &amp; Pebble Plaster</div><div class="res-desc">Upgraded interior finish options with quartz &amp; pebble</div></div>
+      </a>
+      <a class="res-link" href="https://www.sgm.cc/spray-deck-system/" target="_blank">
+        <div class="res-icon">🏗️</div>
+        <div><div class="res-title">SGM Spray Deck System</div><div class="res-desc">Kahlua &amp; Dessert deck color options &amp; technical specs</div></div>
+      </a>
+    </div>
   </div>
 
 </div>
+
+<div class="footer">© Pool Remodeler · Plano, TX · Powered by Claude Vision &amp; Flux Kontext Pro</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const { jsPDF } = window.jspdf;
 
 const PACKAGES = [
-  { id: "pkg1", name: "Classic Cream",    tagline: "Dessert deck · White plaster · Lueders buff coping",                          tags: ["Dessert Deck","White Plaster","Lueders Buff"] },
-  { id: "pkg2", name: "Desert Dusk",      tagline: "Kahlua deck · Light blue plaster · Lueders buff coping",                       tags: ["Kahlua Deck","Light Blue Plaster","Lueders Buff"] },
-  { id: "pkg3", name: "Midnight Modern",  tagline: "Kahlua deck · Dark plaster · Lueders charcoal coping · Blue Gemstone tile",    tags: ["Kahlua Deck","Dark Plaster","Lueders Charcoal","Blue Gemstone Tile"] },
-  { id: "pkg4", name: "Azure Resort",     tagline: "Dessert deck · Blue Gemstone tile · Lueders charcoal coping",                  tags: ["Dessert Deck","Blue Gemstone Tile","Lueders Charcoal"] },
-  { id: "pkg5", name: "Stone & Sky",      tagline: "Dessert deck · Light blue plaster · Lueders charcoal coping",                  tags: ["Dessert Deck","Light Blue Plaster","Lueders Charcoal"] },
-  { id: "pkg6", name: "Warm Elegance",    tagline: "Kahlua deck · White plaster · Lueders buff coping · Blue Gemstone tile",       tags: ["Kahlua Deck","White Plaster","Lueders Buff","Blue Gemstone Tile"] },
+  { id:"pkg1", name:"Classic Cream",   tagline:"Dessert deck · White plaster · Lueders buff coping",                       tags:["Dessert Deck","White Plaster","Lueders Buff"] },
+  { id:"pkg2", name:"Desert Dusk",     tagline:"Kahlua deck · Light blue plaster · Lueders buff coping",                    tags:["Kahlua Deck","Light Blue Plaster","Lueders Buff"] },
+  { id:"pkg3", name:"Midnight Modern", tagline:"Kahlua deck · Dark plaster · Lueders charcoal coping · Blue Gemstone tile", tags:["Kahlua Deck","Dark Plaster","Lueders Charcoal","Blue Gemstone Tile"] },
+  { id:"pkg4", name:"Azure Resort",    tagline:"Dessert deck · Blue Gemstone tile · Lueders charcoal coping",               tags:["Dessert Deck","Blue Gemstone Tile","Lueders Charcoal"] },
+  { id:"pkg5", name:"Stone & Sky",     tagline:"Dessert deck · Light blue plaster · Lueders charcoal coping",               tags:["Dessert Deck","Light Blue Plaster","Lueders Charcoal"] },
+  { id:"pkg6", name:"Warm Elegance",   tagline:"Kahlua deck · White plaster · Lueders buff coping · Blue Gemstone tile",    tags:["Kahlua Deck","White Plaster","Lueders Buff","Blue Gemstone Tile"] },
 ];
 
-let imageFile = null, imageDataUrl = null, completedResults = {}, progressInterval = null;
+let imageFile=null, imageDataUrl=null, completedResults={}, progInterval=null;
 
-// Upload
 document.getElementById('fileInput').addEventListener('change', e => handleFile(e.target.files[0]));
 const dz = document.getElementById('dropzone');
 dz.addEventListener('dragover', e => e.preventDefault());
 dz.addEventListener('drop', e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
 document.getElementById('changeBtn').addEventListener('click', e => {
   e.stopPropagation();
-  imageFile = null; imageDataUrl = null;
-  document.getElementById('previewImg').style.display = 'none';
-  document.getElementById('placeholder').style.display = 'block';
-  document.getElementById('changeBtn').style.display = 'none';
+  imageFile=null; imageDataUrl=null;
+  document.getElementById('previewImg').style.display='none';
+  document.getElementById('placeholder').style.display='block';
+  document.getElementById('changeBtn').style.display='none';
   dz.classList.remove('has-image');
-  document.getElementById('resultsWrap').style.display = 'none';
+  document.getElementById('resultsWrap').style.display='none';
   setReady(false);
 });
 
@@ -179,31 +344,23 @@ function setReady(ok) {
   btn.classList.toggle('ready', ok);
 }
 
-function startProgress() {
-  const fill = document.getElementById('progressFill');
-  let pct = 0; fill.style.width = '0%';
-  progressInterval = setInterval(() => {
-    pct = Math.min(pct + Math.random() * 1.2, 85);
-    fill.style.width = pct + '%';
-  }, 800);
+function startProg() {
+  const fill = document.getElementById('progFill');
+  let pct=0; fill.style.width='0%';
+  progInterval = setInterval(() => { pct=Math.min(pct+Math.random()*1.2,85); fill.style.width=pct+'%'; }, 800);
 }
-function stopProgress() {
-  clearInterval(progressInterval);
-  document.getElementById('progressFill').style.width = '100%';
-}
+function stopProg() { clearInterval(progInterval); document.getElementById('progFill').style.width='100%'; }
 
 document.getElementById('runBtn').addEventListener('click', async () => {
   const btn = document.getElementById('runBtn');
-  btn.disabled = true; btn.classList.remove('ready'); btn.textContent = 'Generating…';
-  completedResults = {};
+  btn.disabled=true; btn.classList.remove('ready'); btn.textContent='Generating…';
+  completedResults={};
 
-  document.getElementById('statusBar').style.display = 'block';
-  document.getElementById('statusMsg').className = 'status-msg';
-  document.getElementById('statusMsg').textContent = 'Generating 6 remodel concepts in parallel…';
-  document.getElementById('progressCount').textContent = '0 of 6 complete';
-  startProgress();
+  document.getElementById('progWrap').style.display='block';
+  document.getElementById('progMsg').textContent='Generating 6 remodel concepts in parallel…';
+  document.getElementById('progCount').textContent='0 of 6 complete';
+  startProg();
 
-  // Build grid with pending cards
   document.getElementById('beforeImg').src = imageDataUrl;
   const grid = document.getElementById('packagesGrid');
   grid.innerHTML = PACKAGES.map(pkg => `
@@ -214,149 +371,121 @@ document.getElementById('runBtn').addEventListener('click', async () => {
       </div>
       <div class="pkg-pending">
         <div class="spinner"></div>
-        <div class="pending-name">${pkg.name}</div>
-        <div class="pending-sub">Generating…</div>
+        <div class="pend-name">${pkg.name}</div>
+        <div class="pend-sub">Generating…</div>
       </div>
     </div>`).join('');
-  document.getElementById('resultsWrap').style.display = 'block';
+  document.getElementById('resultsWrap').style.display='block';
 
-  let doneCount = 0;
-  const STAGGER = 8000; // 8s between each to avoid rate limits
+  let doneCount=0;
+  const STAGGER=9000;
 
   await Promise.all(PACKAGES.map(async (pkg, idx) => {
+    if (idx>0) await new Promise(r=>setTimeout(r, idx*STAGGER));
     try {
-      // Stagger start times
-      if (idx > 0) await new Promise(r => setTimeout(r, idx * STAGGER));
-
-      const formData = new FormData();
-      formData.append('image', imageFile);
-      formData.append('packageId', pkg.id);
-      formData.append('delayMs', 0); // stagger handled client-side now
-
-      const resp = await fetch('/remodel', { method: 'POST', body: formData });
+      const fd = new FormData();
+      fd.append('image', imageFile);
+      fd.append('packageId', pkg.id);
+      fd.append('delayMs', 0);
+      const resp = await fetch('/remodel', { method:'POST', body:fd });
       const data = await resp.json();
-      if (!resp.ok) throw new Error(data.error || 'Server error');
-
+      if (!resp.ok) throw new Error(data.error||'Server error');
       completedResults[pkg.id] = data;
       doneCount++;
-      document.getElementById('progressCount').textContent = `${doneCount} of 6 complete`;
-
-      const card = document.getElementById('card-' + pkg.id);
+      document.getElementById('progCount').textContent=`${doneCount} of 6 complete`;
+      const card = document.getElementById('card-'+pkg.id);
       if (card) {
-        const tagsHtml = pkg.tags.map(t => `<span class="tag">${t}</span>`).join('');
-        card.innerHTML = `
+        const tagsHtml = pkg.tags.map(t=>`<span class="pkg-tag">${t}</span>`).join('');
+        card.innerHTML=`
           <div class="pkg-header">
             <div class="pkg-name">${data.packageName}</div>
-            <div class="pkg-tags">${tagsHtml}</div>
+            <div class="pkg-tagline">${pkg.tagline}</div>
           </div>
-          <div class="pkg-img-wrap">
-            <img src="${data.generatedImage}" />
-          </div>
+          <img src="${data.generatedImage}"/>
           <div class="pkg-body">
             <div class="pkg-desc">${data.analysisText}</div>
+            <div class="pkg-tags">${tagsHtml}</div>
           </div>`;
       }
-    } catch (err) {
+    } catch(err) {
       doneCount++;
-      document.getElementById('progressCount').textContent = `${doneCount} of 6 complete`;
-      const card = document.getElementById('card-' + pkg.id);
-      if (card) {
-        card.innerHTML = `
-          <div class="pkg-header"><div class="pkg-name">${pkg.name}</div></div>
-          <div class="pkg-pending" style="min-height:100px;">
-            <div class="pending-sub" style="color:#a32d2d; text-align:center; padding:0 1rem;">Error: ${err.message}</div>
-          </div>`;
-      }
+      document.getElementById('progCount').textContent=`${doneCount} of 6 complete`;
+      const card = document.getElementById('card-'+pkg.id);
+      if (card) card.innerHTML=`
+        <div class="pkg-header"><div class="pkg-name">${pkg.name}</div></div>
+        <div class="pkg-pending" style="min-height:100px;">
+          <div class="pend-sub" style="color:#a32d2d;text-align:center;padding:0 1rem;">Error: ${err.message}</div>
+        </div>`;
     }
   }));
 
-  stopProgress();
-  document.getElementById('statusBar').style.display = 'none';
-  btn.disabled = false; btn.classList.add('ready'); btn.textContent = 'Generate again';
+  stopProg();
+  document.getElementById('progWrap').style.display='none';
+  btn.disabled=false; btn.classList.add('ready'); btn.textContent='Generate Again';
 });
 
 // PDF
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   const btn = document.getElementById('downloadBtn');
-  btn.disabled = true; btn.textContent = 'Generating PDF…';
+  btn.disabled=true; btn.textContent='Generating PDF…';
   try {
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const margin = 16, cw = pageW - margin * 2;
-    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const doc = new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+    const M=16, CW=W-M*2;
+    const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
 
-    function addHeader() {
-      doc.setFillColor(26,24,20); doc.rect(0,0,pageW,20,'F');
+    function header() {
+      doc.setFillColor(10,22,40); doc.rect(0,0,W,22,'F');
       doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(13);
-      doc.text('Pool Remodel Report', margin, 13);
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-      doc.text(date, pageW-margin, 13, { align:'right' });
+      doc.text('Pool Remodel Report — Plano, TX', M, 14);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8);
+      doc.text(date, W-M, 14, {align:'right'});
     }
-    function addImg(url, x, y, w, h) {
-      const fmt = url.startsWith('data:image/png') ? 'PNG' : 'JPEG';
-      doc.addImage(url, fmt, x, y, w, h, undefined, 'FAST');
+    function addImg(url,x,y,w,h) {
+      doc.addImage(url, url.startsWith('data:image/png')?'PNG':'JPEG', x,y,w,h,undefined,'FAST');
     }
 
-    addHeader();
-    let y = 26;
+    header(); let y=28;
 
-    // Before image
+    doc.setTextColor(91,184,212); doc.setFont('helvetica','bolditalic'); doc.setFontSize(8.5);
+    doc.text('"This pool design sells houses fast in Plano, TX" · "Favorite designer for homeowners"', M, y); y+=9;
+
     doc.setTextColor(140,134,128); doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setCharSpace(0.8);
-    doc.text('ORIGINAL POOL', margin, y); doc.setCharSpace(0); y += 3;
-    const bh = 50;
-    doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
-    doc.rect(margin, y, cw, bh+6);
-    doc.setFillColor(238,234,227); doc.rect(margin, y, cw, 6, 'F');
-    doc.setTextColor(107,104,96); doc.setFontSize(7.5); doc.text('Before', margin+3, y+4.2);
-    addImg(imageDataUrl, margin, y+6, cw, bh);
-    y += bh + 6 + 8;
+    doc.text('ORIGINAL POOL', M, y); doc.setCharSpace(0); y+=3;
+    const bh=46; doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
+    doc.rect(M,y,CW,bh+6); doc.setFillColor(238,234,227); doc.rect(M,y,CW,6,'F');
+    doc.setTextColor(107,104,96); doc.setFontSize(7.5); doc.text('Before remodel',M+3,y+4.2);
+    addImg(imageDataUrl,M,y+6,CW,bh); y+=bh+6+8;
 
-    // Each package
     for (const pkg of PACKAGES) {
-      const data = completedResults[pkg.id];
+      const data=completedResults[pkg.id];
       if (!data) continue;
-
-      if (y + 95 > pageH - 12) { doc.addPage(); addHeader(); y = 26; }
-
-      // Package name badge
-      doc.setFillColor(24,95,165); doc.roundedRect(margin, y, cw, 9, 2, 2, 'F');
-      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9);
-      doc.text(data.packageName, margin+5, y+6.2);
+      if (y+100>H-12) { doc.addPage(); header(); y=28; }
+      doc.setFillColor(24,95,165); doc.roundedRect(M,y,CW,9,2,2,'F');
+      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9.5);
+      doc.text(data.packageName, M+4, y+6.3);
       doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
-      doc.text(pkg.tagline, pageW-margin-3, y+6.2, { align:'right' });
-      y += 12;
-
-      // After image
-      const ah = 58;
-      doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
-      doc.rect(margin, y, cw, ah+6);
-      doc.setFillColor(238,234,227); doc.rect(margin, y, cw, 6, 'F');
+      doc.text(pkg.tagline, W-M-3, y+6.3, {align:'right'});
+      y+=12;
+      const ah=54; doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
+      doc.rect(M,y,CW,ah+6); doc.setFillColor(238,234,227); doc.rect(M,y,CW,6,'F');
       doc.setTextColor(107,104,96); doc.setFontSize(7.5); doc.setFont('helvetica','normal');
-      doc.text('After — '+data.packageName, margin+3, y+4.2);
-      addImg(data.generatedImage, margin, y+6, cw, ah);
-      y += ah + 6 + 5;
-
-      // Description
+      doc.text('After — '+data.packageName,M+3,y+4.2);
+      addImg(data.generatedImage,M,y+6,CW,ah); y+=ah+6+4;
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(74,72,68);
-      const lines = doc.splitTextToSize(data.analysisText, cw-8);
-      const bxH = lines.length * 4.5 + 8;
+      const lines=doc.splitTextToSize(data.analysisText,CW-8);
+      const bxH=lines.length*4.5+8;
       doc.setFillColor(247,245,240); doc.setDrawColor(212,208,200); doc.setLineWidth(0.3);
-      doc.roundedRect(margin, y, cw, bxH, 2, 2, 'FD');
-      doc.text(lines, margin+4, y+6);
-      y += bxH + 12;
+      doc.roundedRect(M,y,CW,bxH,2,2,'FD'); doc.text(lines,M+4,y+6); y+=bxH+12;
     }
 
-    // Footer
-    const fy = pageH - 10;
-    doc.setDrawColor(212,208,200); doc.setLineWidth(0.25); doc.line(margin, fy, pageW-margin, fy);
+    const fy=H-10; doc.setDrawColor(212,208,200); doc.line(M,fy,W-M,fy);
     doc.setTextColor(176,171,164); doc.setFontSize(7);
-    doc.text('Powered by Claude Vision & Flux Kontext Pro', margin, fy+4.5);
-    doc.text(date, pageW-margin, fy+4.5, { align:'right' });
-
+    doc.text('Pool Remodeler · Plano, TX · Powered by Claude Vision & Flux Kontext Pro',M,fy+4.5);
+    doc.text(date,W-M,fy+4.5,{align:'right'});
     doc.save(`pool-remodel-report-${Date.now()}.pdf`);
   } catch(err) { alert('PDF error: '+err.message); }
-  finally { btn.disabled=false; btn.textContent='↓ Download PDF report'; }
+  finally { btn.disabled=false; btn.textContent='↓ Download PDF Report'; }
 });
 </script>
 </body>

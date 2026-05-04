@@ -28,7 +28,7 @@ async function replicateWithRetry(replicate, model, input, maxRetries = 5) {
 }
 
 const PACKAGES = [
-  // ── 6 visual concept packages (used by the AI visualization grid) ──
+  // ── 6 visual concept packages ──
   {
     id: "pkg1", name: "Classic Cream",
     prompt: WATER + "Edit this pool: (1) Fill pool with vivid turquoise-blue water. (2) Resurface pool interior with smooth bright white plaster — pure white walls and floor. (3) Resurface deck with SGM Dessert spray deck — pale cream ivory textured concrete (#E8D5B0). (4) Replace pool coping with Lueders buff limestone — smooth cream/beige flat rectangular slabs with bullnose lip. Keep house, trees, sky identical."
@@ -52,6 +52,24 @@ const PACKAGES = [
   {
     id: "pkg6", name: "Warm Elegance",
     prompt: WATER + "Edit this pool: (1) Fill pool with vivid sparkling turquoise-blue water. (2) Resurface pool interior with smooth bright white plaster — pure white walls and floor. (3) Add National Pool Tile Blue Gemstone 6x6 glossy sapphire-blue waterline tile band — 6-inch strip at waterline only. (4) Resurface deck with SGM Kahlua spray deck — warm coffee-caramel sandy brown (#C4A882). (5) Replace coping with Lueders buff limestone — smooth cream/beige flat rectangular slabs with bullnose lip. Keep house, trees, sky identical."
+  },
+
+  // ── 4 pricing tier packages ──
+  {
+    id: "price_bronze1", name: "New Tile — $5,500",
+    prompt: WATER + "Edit this pool: (1) Fill pool with clean sparkling crystal-blue water. (2) Replace ONLY the 6-inch waterline tile band along pool walls with National Pool Tile Blue Gemstone 6x6 glossy ceramic tiles — deep sapphire blue, clean grid. Do NOT change deck, coping, interior plaster, house, trees, or sky."
+  },
+  {
+    id: "price_bronze2", name: "Deck Resurfacing — $6,500",
+    prompt: WATER + "Edit this pool: (1) Fill pool with clean sparkling crystal-blue water. (2) Resurface pool deck with SGM Kahlua spray deck — warm coffee-caramel sandy brown textured concrete (#C4A882). (3) Replace pool coping with Lueders buff limestone — smooth cream/beige flat rectangular slabs with bullnose lip. Do NOT change pool interior, tile, house, trees, or sky."
+  },
+  {
+    id: "price_silver", name: "Tile & Plaster — $16,500",
+    prompt: WATER + "Edit this pool: (1) Fill pool with vivid turquoise-blue water. (2) Resurface pool interior with smooth bright white plaster — pure white walls and floor. (3) Add 1x1 mosaic tile waterline band — small glossy white/blue mosaic tiles, 6-inch strip at waterline. (4) Resurface deck with SGM Dessert spray deck — pale cream ivory textured concrete (#E8D5B0). (5) Replace coping with Lueders buff limestone — smooth cream/beige flat slabs with bullnose lip. Keep house, trees, sky identical."
+  },
+  {
+    id: "price_gold", name: "Tile & Upgraded Plaster — $19,500",
+    prompt: WATER + "Edit this pool: (1) Fill pool with deep dramatic dark navy-blue water. (2) Resurface pool interior with smooth dark charcoal plaster — near-black deep grey walls and floor. (3) Add National Pool Tile Blue Gemstone 6x6 glossy sapphire-blue waterline tile band, 6-inch strip at waterline. (4) Resurface deck with SGM Kahlua spray deck — warm coffee-caramel sandy brown (#C4A882). (5) Replace coping with Lueders charcoal limestone — dark grey flat rectangular slabs with bullnose lip. Keep house, trees, sky identical."
   },
 ];
 
@@ -78,10 +96,10 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
 
     const ar = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514", max_tokens: 500,
+      model: "claude-sonnet-4-20250514", max_tokens: 400,
       messages: [{ role: "user", content: [
         { type: "image", source: { type: "base64", media_type: mediaType, data: imageBase64 } },
-        { type: "text", text: `You are a professional pool remodeling sales consultant in Plano, TX. For the "${pkg.name}" remodel concept, write 2 enthusiastic sentences describing what this transformation will look like for this specific pool. Mention that this pool design sells houses fast in Plano, TX.` }
+        { type: "text", text: `You are a pool remodeling sales consultant in Plano, TX. For the "${pkg.name}" package, write 2 enthusiastic sentences describing what this transformation will look like for this specific pool. Mention it sells houses fast in Plano, TX.` }
       ]}]
     });
     const analysisText = ar.content.map(c => c.text || "").join("");
@@ -94,10 +112,7 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     const imgBuf = await (await fetch(imgUrl)).arrayBuffer();
 
     res.json({
-      success: true,
-      packageId: pkg.id,
-      packageName: pkg.name,
-      analysisText,
+      success: true, packageId: pkg.id, packageName: pkg.name, analysisText,
       generatedImage: `data:image/jpeg;base64,${Buffer.from(imgBuf).toString("base64")}`
     });
   } catch (err) {

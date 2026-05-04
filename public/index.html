@@ -76,6 +76,11 @@ body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; colo
 .pricing-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
 .price-card { border-radius:14px; overflow:hidden; border:1px solid #e0dcd4; background:#fff; }
 .price-card-top { padding:14px 16px 10px; }
+.price-img-wrap { position:relative; background:#f0ece4; }
+.price-img-wrap img { width:100%; display:block; max-height:200px; object-fit:cover; }
+.price-img-pending { display:flex; flex-direction:column; align-items:center; justify-content:center; height:160px; gap:8px; background:#f7f5f0; }
+.price-img-pending.hidden { display:none; }
+.price-gen-label { font-size:11px; color:#b0aba4; font-family:sans-serif; }
 .price-tier { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
 .price-tier.bronze { color:#cd7f32; }
 .price-tier.silver { color:#909090; }
@@ -187,6 +192,9 @@ body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; colo
           <div class="price-amount">$5,500</div>
           <div class="price-includes">Blue Gemstone 6×6 glossy waterline tile band · Fresh water fill · High-impact entry upgrade</div>
         </div>
+        <div class="price-img-wrap" id="pimg-price_bronze1">
+          <div class="price-img-pending" id="ppend-price_bronze1"><div class="spinner"></div><div class="price-gen-label">Upload a photo to preview</div></div>
+        </div>
         <div class="price-card-bottom"><span class="price-badge bronze">Best ROI entry point</span></div>
       </div>
 
@@ -196,6 +204,9 @@ body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; colo
           <div class="price-name">Deck Resurfacing</div>
           <div class="price-amount">$6,500</div>
           <div class="price-includes">Kahlua spray deck · Lueders buff limestone coping · Transforms curb appeal instantly</div>
+        </div>
+        <div class="price-img-wrap" id="pimg-price_bronze2">
+          <div class="price-img-pending" id="ppend-price_bronze2"><div class="spinner"></div><div class="price-gen-label">Upload a photo to preview</div></div>
         </div>
         <div class="price-card-bottom"><span class="price-badge bronze">Most popular starter</span></div>
       </div>
@@ -207,6 +218,9 @@ body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; colo
           <div class="price-amount">$16,500</div>
           <div class="price-includes">White plaster interior · 1×1 mosaic waterline tile · Lueders buff coping · Dessert spray deck</div>
         </div>
+        <div class="price-img-wrap" id="pimg-price_silver">
+          <div class="price-img-pending" id="ppend-price_silver"><div class="spinner"></div><div class="price-gen-label">Upload a photo to preview</div></div>
+        </div>
         <div class="price-card-bottom"><span class="price-badge silver">Full interior + exterior</span></div>
       </div>
 
@@ -216,6 +230,9 @@ body { font-family:-apple-system,'Segoe UI',sans-serif; background:#f5f4f0; colo
           <div class="price-name">Tile &amp; Upgraded Plaster</div>
           <div class="price-amount">$19,500</div>
           <div class="price-includes">Dark premium plaster · Blue Gemstone 6×6 tile · Lueders charcoal coping · Kahlua deck</div>
+        </div>
+        <div class="price-img-wrap" id="pimg-price_gold">
+          <div class="price-img-pending" id="ppend-price_gold"><div class="spinner"></div><div class="price-gen-label">Upload a photo to preview</div></div>
         </div>
         <div class="price-card-bottom"><span class="price-badge gold">⭐ Sells homes fast</span></div>
       </div>
@@ -422,6 +439,44 @@ document.getElementById('runBtn').addEventListener('click', async () => {
   stopProg();
   document.getElementById('progWrap').style.display='none';
   btn.disabled=false; btn.classList.add('ready'); btn.textContent='Generate Again';
+
+  // Now generate pricing package images in background (staggered after concepts)
+  const PRICE_PKGS = [
+    { id:'price_bronze1', stagger:0 },
+    { id:'price_bronze2', stagger:9000 },
+    { id:'price_silver',  stagger:18000 },
+    { id:'price_gold',    stagger:27000 },
+  ];
+
+  // Show spinners in pricing cards
+  PRICE_PKGS.forEach(p => {
+    const pend = document.getElementById('ppend-'+p.id);
+    if (pend) { pend.innerHTML='<div class="spinner"></div><div class="price-gen-label">Generating your preview…</div>'; }
+  });
+
+  PRICE_PKGS.forEach(async (p) => {
+    if (p.stagger > 0) await new Promise(r => setTimeout(r, p.stagger));
+    try {
+      const fd = new FormData();
+      fd.append('image', imageFile);
+      fd.append('packageId', p.id);
+      fd.append('delayMs', 0);
+      const resp = await fetch('/remodel', { method:'POST', body:fd });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error||'Error');
+      const wrap = document.getElementById('pimg-'+p.id);
+      if (wrap) {
+        const pend = document.getElementById('ppend-'+p.id);
+        if (pend) pend.remove();
+        const img = document.createElement('img');
+        img.src = data.generatedImage;
+        wrap.appendChild(img);
+      }
+    } catch(err) {
+      const pend = document.getElementById('ppend-'+p.id);
+      if (pend) pend.innerHTML=`<div class="price-gen-label" style="color:#a32d2d">Could not generate preview</div>`;
+    }
+  });
 });
 
 // PDF

@@ -82,7 +82,7 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const replicate = new Replicate({ auth: process.env.REPLICATE_API_TOKEN });
 
-    const { packageId, delayMs } = req.body;
+    const { packageId, delayMs, variation } = req.body;
     const imageFile = req.file;
     if (!imageFile) return res.status(400).json({ error: "No image" });
     const pkg = PACKAGES.find(p => p.id === packageId);
@@ -104,8 +104,20 @@ app.post("/remodel", upload.single("image"), async (req, res) => {
     });
     const analysisText = ar.content.map(c => c.text || "").join("");
 
+    // Add subtle variation to prompt so regenerations look different
+    const variationHints = [
+      "Bright midday sunlight, crisp shadows.",
+      "Soft golden afternoon light.",
+      "Clear blue sky, vibrant colors.",
+      "Overcast soft light, rich saturated colors.",
+      "Morning light, warm tones.",
+      "Bright sunshine, high contrast.",
+    ];
+    const variationSeed = parseInt(variation || Date.now()) % variationHints.length;
+    const finalPrompt = pkg.prompt + " " + variationHints[variationSeed];
+
     const output = await replicateWithRetry(replicate, "black-forest-labs/flux-kontext-pro", {
-      prompt: pkg.prompt, input_image: imageDataUrl, output_format: "jpg", safety_tolerance: 5
+      prompt: finalPrompt, input_image: imageDataUrl, output_format: "jpg", safety_tolerance: 5
     });
 
     const imgUrl = Array.isArray(output) ? output[0] : output;
